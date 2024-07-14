@@ -23,6 +23,7 @@ import Profile from "../src/components/auth/Profile";
 import AdminRoute from './components/home/AdminRoute';
 import ConfirmResetPassword from '../src/components/auth/ConfirmResetPassword'
 
+
 const App = () => {
   return (
     <AuthProvider>
@@ -50,7 +51,6 @@ const App = () => {
           <Route exact path="/booking-success" component={BookingSuccess} />
           <Route exact path="/existing-bookings" component={Bookings} />
           <Route exact path="/find-booking" component={FindBooking} />
-
           <Route exact path="/login" component={Login} />
           <Route exact path="/register" component={Registration} />
           <Route exact path="/reset-password" component={ResetPassword} />

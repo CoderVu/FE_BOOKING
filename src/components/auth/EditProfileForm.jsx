@@ -6,6 +6,7 @@ const EditProfileForm = ({ user, setUser }) => {
     firstName: user.firstName,
     lastName: user.lastName,
     email: user.email,
+    phone: user.phone,
     password: "",
   });
 
@@ -21,6 +22,7 @@ const EditProfileForm = ({ user, setUser }) => {
         firstName: formData.firstName,
         lastName: formData.lastName,
         email: formData.email,
+        phone: formData.phone,
         password: formData.password,
       });
       setUser(updatedUser);
@@ -76,6 +78,19 @@ const EditProfileForm = ({ user, setUser }) => {
         />
       </div>
       <div className="mb-3">
+        <label htmlFor="phone" className="form-label">
+          Phone
+        </label>
+        <input
+          type="text"
+          className="form-control"
+          id="phone"
+          name="phone"
+          value={formData.phone}
+          onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3">
         <label htmlFor="password" className="form-label">
           Password
         </label>
@@ -89,7 +104,7 @@ const EditProfileForm = ({ user, setUser }) => {
         />
       </div>
       <button type="submit" className="btn btn-primary">
-        Save Changes
+        Save
       </button>
     </form>
   );

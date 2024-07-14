@@ -1,0 +1,63 @@
+/* Admin.css */
+.admin-page {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-color: #f4f4f9;
+    color: #333;
+}
+
+.admin-header {
+    background-color: #235077;
+    color: white;
+    padding: 20px;
+    text-align: center;
+}
+
+.admin-main {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 20px;
+}
+
+.admin-card {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+}
+
+.admin-card:hover {
+    transform: translateY(-5px);
+}
+
+.admin-link {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    text-decoration: none;
+    background-color: #235077; /* Ensure the link color is #235077 */
+}
+
+.admin-link:hover {
+    color: #16385a; /* Slightly darker shade on hover for better interaction */
+}
+
+.admin-icon {
+    font-size: 2em;
+    margin-right: 15px;
+    color: #235077;
+}
+
+.admin-text h3 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.admin-text p {
+    margin: 5px 0 0;
+    font-size: 0.9em;
+    color: white;
+}

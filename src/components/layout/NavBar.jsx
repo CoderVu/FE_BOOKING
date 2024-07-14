@@ -1,35 +1,23 @@
 import React, { useState } from "react";
 import { NavLink, Link } from "react-router-dom";
 import Logout from "../auth/Logout";
+import "../styles/index.css"; // Assuming you move styles to a CSS file
 
 const NavBar = () => {
     const [showAccount, setShowAccount] = useState(false);
     const currentUser = localStorage.getItem("userId");
+    const isLoggedIn = !!localStorage.getItem("token"); // Ensure isLoggedIn is a boolean
+    const userRole = localStorage.getItem("userRole");
 
     const handleAccountClick = (e) => {
         e.preventDefault();
         setShowAccount(!showAccount);
     };
 
-    const isLoggedIn = !!localStorage.getItem("token"); // Ensure isLoggedIn is a boolean
-    const userRole = localStorage.getItem("userRole");
-
-    // CSS definitions
-    const navbarStyle = {
-        padding: 0,
-    };
-
-    const navItemStyle = {
-        position: "relative",
-    };
-    const dropdownMenuStyle = {
-        display: showAccount ? "block" : "none",
-    };
-
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light px-5 shadow mt-5 sticky-top" style={navbarStyle}>
+        <nav className="navbar navbar-expand-lg navbar-light bg-light px-5 shadow mt-5 sticky-top custom-navbar">
             <div className="container-fluid">
-                <Link to={"/"} className="navbar-brand">
+                <Link to="/" className="navbar-brand">
                     <span className="hotel-color">Tranquil Shores Hotel</span>
                 </Link>
 
@@ -47,22 +35,22 @@ const NavBar = () => {
 
                 <div className="collapse navbar-collapse" id="navbarScroll">
                     <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
-                        <li className="nav-item" style={navItemStyle}>
-                            <NavLink className="nav-link" aria-current="page" to={"/browse-all-rooms"}>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" aria-current="page" to="/browse-all-rooms">
                                 View Rooms
                             </NavLink>
                         </li>
 
                         {isLoggedIn && userRole === "ROLE_ADMIN" && (
-                            <li className="nav-item" style={navItemStyle}>
-                                <NavLink className="nav-link" aria-current="page" to={"/admin"}>
+                            <li className="nav-item">
+                                <NavLink className="nav-link" aria-current="page" to="/admin">
                                     Admin
                                 </NavLink>
                             </li>
                         )}
 
-                        <li className="nav-item" style={navItemStyle}>
-                            <NavLink className="nav-link" to={"/find-booking"}>
+                        <li className="nav-item">
+                            <NavLink className="nav-link" to="/find-booking">
                                 Find my booking
                             </NavLink>
                         </li>
@@ -74,8 +62,7 @@ const NavBar = () => {
                                 className={`nav-link dropdown-toggle text-success ${showAccount ? "active" : ""}`}
                                 href="."
                                 role="button"
-                                data-bs-toggle="dropdown"
-                                aria-expanded="false"
+                                aria-expanded={showAccount}
                                 onClick={handleAccountClick}
                             >
                                 {isLoggedIn ? (
@@ -85,7 +72,7 @@ const NavBar = () => {
                                 )}
                             </a>
 
-                            <ul className={`dropdown-menu`} aria-labelledby="navbarDropdown" style={dropdownMenuStyle}>
+                            <ul className={`dropdown-menu ${showAccount ? "show" : ""}`} aria-labelledby="navbarDropdown">
                                 {isLoggedIn ? (
                                     <li>
                                         <Logout />
@@ -93,12 +80,12 @@ const NavBar = () => {
                                 ) : (
                                     <>
                                         <li>
-                                            <Link className="dropdown-item" to={"/login"}>
+                                            <Link className="dropdown-item" to="/login">
                                                 Login
                                             </Link>
                                         </li>
                                         <li>
-                                            <Link className="dropdown-item" to={"/register"}>
+                                            <Link className="dropdown-item" to="/register">
                                                 Register
                                             </Link>
                                         </li>

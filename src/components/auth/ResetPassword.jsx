@@ -20,21 +20,54 @@ const ResetPassword = () => {
     };
 
     return (
-        <div className="container reset-password-container">
-            <h2>Reset Password</h2>
+        <div className="container" style={{ 
+            maxWidth: '500px',
+            marginTop: '50px',
+            padding: '20px',
+            backgroundColor: '#f5f5f5',
+            border: '1px solid #ddd',
+            borderRadius: '5px',
+            boxShadow: '0 2px 4px rgba(0, 0, 0, 0.1)'}}>
+            <h2 style={{
+                textAlign: 'center',
+                marginBottom: '20px'}}
+            >
+                Reset Password
+            </h2>
             <form onSubmit={handleSubmit}>
-                <div className="form-group">
-                    <label htmlFor="email">Email Address</label>
+                <div className="form-group" style={{
+                            marginBottom: '15px'
+                        }}>
+                    <label htmlFor="email" style={{marginBottom:'15px'}}>Email nhận OTP</label>
                     <input
                         type="email"
                         className="form-control"
                         id="email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
-                        required
+                        required style={{
+                            width: '100%',
+                            padding: '10px',
+                            fontSize: '16px',
+                            border: '1px solid #ccc',
+                            borderRadius: '4px',
+                            transition: 'border-color 0.3s ease'
+                        }}
                     />
                 </div>
-                <button type="submit" className="btn btn-primary">Send Reset Link</button>
+                <button type="submit" className="btn btn-primary"style={{
+                            display: 'block',
+                            width: '100%',
+                            padding: '12px',
+                            marginTop: '20px',
+                            backgroundColor: '#4CAF50',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                            cursor: 'pointer',
+                            fontSize: '16px',
+                            transition: 'background-color 0.3s ease'
+                        }}>Send Reset Link</button>
             </form>
             {message && <p className="message">{message}</p>}
         </div>

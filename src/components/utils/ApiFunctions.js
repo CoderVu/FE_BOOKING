@@ -61,15 +61,15 @@ export async function getAllRooms() {
 // This function deletes a room from the database
 export async function deleteRoom(roomId) {
   try {
-    const headers = getHeader();
-    console.log(headers);
-    const response = await api.delete(`/api/v1/rooms/delete/room/${roomId}`, {
-      headers: headers  
+    const headers = getHeader(); // Lấy headers từ hàm getHeader()
+    console.log(headers); // In ra console.log
+    const response = await axios.delete(`/api/v1/rooms/delete/room/${roomId}`, {
+      headers: headers // Sử dụng headers trong yêu cầu
     });
     return response.data;
   } catch (error) {
     console.error("Error deleting room:", error);
-    return false;
+    throw new Error("Error deleting room");
   }
 }
 
@@ -79,7 +79,7 @@ export async function updateRoom(roomId, roomData) {
   formData.append("roomType", roomData.roomType);
   formData.append("roomPrice", roomData.roomPrice);
   formData.append("photo", roomData.photo);
-
+  formData.append("description", roomData.description);
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
@@ -293,6 +293,33 @@ export async function updateProfileUserById(userId, userData) {
     console.error("Error updating profile:", error);
     throw new Error("Error updating profile");
   }
-
 }
+export const rateRoom = async (userId, roomId, bookingId, starRating, comment) => {
+  try {
+      const headers = getHeader(); 
+      console.log(headers);
 
+      // Kiểm tra và log các giá trị của tham số
+      console.log('userId:', userId);
+      console.log('roomId:', roomId);
+      console.log('bookingId:', bookingId);
+      console.log('starRating:', starRating);
+      console.log('comment:', comment);
+
+      // Gửi yêu cầu POST với các tham số dạng query
+      const response = await axios.post(`/api/v1/ratings/rate`, null, {
+          params: {
+              userId: userId,
+              roomId: roomId,
+              bookingId: bookingId,
+              starRating: starRating,
+              comment: comment
+          },
+          headers: headers
+      });
+      return response.data;
+  } catch (error) {
+      console.error("Error rating room:", error);
+      throw new Error("Error rating room");
+  }
+};

@@ -88,7 +88,7 @@ const BookingForm = () => {
                 <div className="row">
                     <div className="col-md-6">
                         <div className="card card-body mt-5">
-                            <h4 className="card card-title">Reserve Room</h4>
+                            <h4 className="card-title" style={{textAlign:'center'}}>Reserve Room</h4>
                             <Form noValidate validated={isValidated} onSubmit={handleSubmit}>
                                 <Form.Group>
                                     <Form.Label htmlFor="guestName">Full Name:</Form.Label>

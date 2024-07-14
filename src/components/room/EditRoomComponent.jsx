@@ -11,6 +11,7 @@ const EditRoom = () => {
     photo: null,
     roomType: '',
     roomPrice: '',
+    description: ''
   });
   const [imagePreview, setImagePreview] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
@@ -29,6 +30,7 @@ const EditRoom = () => {
             photo: null,
             roomType: '',
             roomPrice: '',
+            description: ''
           });
         }
       } catch (error) {
@@ -97,6 +99,20 @@ const EditRoom = () => {
                 name="roomPrice"
                 value={room ? room.roomPrice : ''}
                 onChange={handleInputChange}
+              />
+
+            </div>
+            <div className="mb-3">
+              <label htmlFor="description" className="form-label">
+                Room Description
+              </label>
+              <textarea
+                className="form-control"
+                required
+                id="description"
+                name="description"
+                value={room ? room.description : ''}
+                onChange={handleInputChange}  
               />
             </div>
             <div className="mb-3">

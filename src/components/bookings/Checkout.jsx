@@ -12,7 +12,7 @@ import {
 
 import { useParams } from "react-router-dom"
 import { getRoomById } from "../utils/ApiFunctions"
-import RoomCarousel from "../room/RoomCarousel"
+import RoomCarousel from "../common/RoomCarousel"
 
 const Checkout = () => {
 	const [error, setError] = useState(null)
@@ -52,7 +52,7 @@ const Checkout = () => {
 							<div className="room-info">
 								<img
 									src={`data:image/png;base64,${roomInfo.photo}`}
-									alt="Room photo"
+									alt=""
 									style={{ width: "100%", height: "200px" }}
 								/>
 								<table className="table table-bordered">
@@ -65,6 +65,11 @@ const Checkout = () => {
 											<th>Price per night:</th>
 											<td>${roomInfo.roomPrice}</td>
 										</tr>
+										<tr>
+											<th>Rating:</th>
+											<td>{roomInfo.starRating}</td>
+										</tr>
+
 										<tr>
 											<th>Room Service:</th>
 											<td>

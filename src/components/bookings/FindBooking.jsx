@@ -111,7 +111,7 @@ const FindBooking = () => {
 				<p>Full Name: {bookingInfo.guestFullName}</p>
 				<p>Email Address: {bookingInfo.guestEmail}</p>
 				<p>Adults: {bookingInfo.numOfAdults}</p>
-				<p>Children: {bookingInfo.numOfChilren}</p>
+				<p>Children: {bookingInfo.numOfChildren}</p>
 				<p>Total Guest: {bookingInfo.totalNumOfGuest}</p>
 	
 				{!isDeleted && (

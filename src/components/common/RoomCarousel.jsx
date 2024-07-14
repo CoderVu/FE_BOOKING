@@ -1,32 +1,52 @@
-import React, { useEffect, useState } from "react"
-import { getAllRooms } from "../utils/ApiFunctions"
-import { Link } from "react-router-dom"
-import { Card, Carousel, Col, Container, Row } from "react-bootstrap"
+import React, { useEffect, useState } from "react";
+import { getAllRooms } from "../utils/ApiFunctions";
+import { Link } from "react-router-dom";
+import { Card, Carousel, Col, Container, Row } from "react-bootstrap";
+import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
+import "../styles/index.css"
 
 const RoomCarousel = () => {
-	const [rooms, setRooms] = useState([{ id: "", roomType: "", roomPrice: "", photo: "" }])
-	const [errorMessage, setErrorMessage] = useState("")
-	const [isLoading, setIsLoading] = useState(false)
+	const [rooms, setRooms] = useState([]);
+	const [errorMessage, setErrorMessage] = useState("");
+	const [isLoading, setIsLoading] = useState(false);
 
 	useEffect(() => {
-		setIsLoading(true)
+		setIsLoading(true);
 		getAllRooms()
 			.then((data) => {
-				setRooms(data)
-				setIsLoading(false)
+				setRooms(data);
+				setIsLoading(false);
 			})
 			.catch((error) => {
-				setErrorMessage(error.message)
-				setIsLoading(false)
-			})
-	}, [])
+				setErrorMessage(error.message);
+				setIsLoading(false);
+			});
+	}, []);
 
 	if (isLoading) {
-		return <div className="mt-5">Loading rooms....</div>
+		return <div className="mt-5">Loading rooms....</div>;
 	}
 	if (errorMessage) {
-		return <div className=" text-danger mb-5 mt-5">Error : {errorMessage}</div>
+		return <div className="text-danger mb-5 mt-5">Error : {errorMessage}</div>;
 	}
+
+	const getStarRating = (starRating) => {
+		const fullStars = Math.floor(starRating);
+		const hasHalfStar = starRating % 1 >= 0.25; // Hiển thị nửa sao nếu phần thập phân >= 0.25
+		const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
+
+		return (
+			<div className="star-rating">
+				{[...Array(fullStars)].map((_, i) => (
+					<FaStar key={`full-${i}`} style={{ color: "gold" }} />
+				))}
+				{hasHalfStar && <FaStarHalfAlt key="half" style={{ color: "gold" }} />}
+				{[...Array(emptyStars)].map((_, i) => (
+					<FaRegStar key={`empty-${i}`} style={{ color: "gold" }} />
+				))}
+			</div>
+		);
+	};
 
 	return (
 		<section className="bg-light mb-5 mt-5 shadow">
@@ -41,7 +61,7 @@ const RoomCarousel = () => {
 											<Link to={`/book-room/${room.id}`}>
 												<Card.Img
 													variant="top"
-													src={`data:image/png;base64, ${room.photo}`}
+													src={`data:image/png;base64,${room.photo}`}
 													alt="Room Photo"
 													className="w-100"
 													style={{ height: "200px" }}
@@ -49,7 +69,19 @@ const RoomCarousel = () => {
 											</Link>
 											<Card.Body>
 												<Card.Title className="hotel-color">{room.roomType}</Card.Title>
-												<Card.Title className="room-price">${room.roomPrice}/night</Card.Title>
+												<Card.Title className="room-price" style={{ color: "darkgoldenrod", fontFamily: "'Courier New', Courier, monospace", fontSize: "medium", position: "relative" }}>
+                           						 {room.roomPrice}
+                       							     <span style={{ position: "relative", top: "-1px" }}> VNĐ/night</span>
+                    						    </Card.Title>
+												
+												{/* Hiển thị sao và số lượng đánh giá */}
+												<div className="d-flex align-items-center">
+													{room.averageRating >= 0 && getStarRating(room.averageRating)}
+													<div className="rating-count">
+														({room.ratingCount} {room.ratingCount === 1 ? 'review' : 'reviews'})
+													</div>
+												</div>
+
 												<div className="flex-shrink-0">
 													<Link to={`/book-room/${room.id}`} className="btn btn-hotel btn-sm">
 														Book Now
@@ -65,7 +97,7 @@ const RoomCarousel = () => {
 				</Carousel>
 			</Container>
 		</section>
-	)
-}
+	);
+};
 
-export default RoomCarousel
+export default RoomCarousel;

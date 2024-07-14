@@ -56,6 +56,22 @@ body {
   width: 100%;
   height: 4px;
 }
+.custom-navbar {
+  padding: 0;
+  background-color: rgb(26, 148, 255);
+}
+
+.nav-item {
+  position: relative;
+}
+
+.dropdown-menu {
+  display: none;
+}
+
+.dropdown-menu.show {
+  display: block;
+}
   /* Hotel custom color */
  .btn-hotel{
   background-color: rgb(169, 77, 123);
@@ -220,64 +236,76 @@ body {
   height: 60px;
   text-align: center;
 }
-/* Resetpass.css */
-
-/* src/components/auth/ResetPassword.css */
-
-.reset-password-container {
-  max-width: 400px;
-  margin: 50px auto;
-  padding: 20px;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  background-color: #f9f9f9;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+/* Form đăng kí */
+.registration-container {
+    max-width: 750px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #f5f5f5;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-.reset-password-container h2 {
-  text-align: center;
-  margin-bottom: 20px;
-  color: #333;
+.registration-title {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
 }
 
-.reset-password-container .form-group {
-  margin-bottom: 15px;
+.registration-form .form-group {
+    margin-bottom: 15px;
 }
 
-.reset-password-container .form-group label {
-  display: block;
-  margin-bottom: 5px;
-  color: #555;
+.registration-form label {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 5px;
 }
 
-.reset-password-container .form-group input {
-  width: 100%;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  box-sizing: border-box;
+.registration-form .icon {
+    margin-right: 10px;
 }
 
-.reset-password-container .btn-primary {
-  width: 100%;
-  padding: 10px;
-  border: none;
-  border-radius: 5px;
-  background-color: #007bff;
-  color: #fff;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+.registration-form .form-control {
+    width: 100%;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
 }
 
-.reset-password-container .btn-primary:hover {
-  background-color: #0056b3;
+.registration-form .submit-btn {
+    width: 20%;
+    background-color: #007bff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    margin-bottom: 10px;
+    
+  
+
 }
 
-.reset-password-container .message {
-  margin-top: 15px;
-  text-align: center;
-  color: #333;
+.registration-form .submit-btn:hover {
+    background-color: #0056b3;
+}
+
+.registration-form .additional-links {
+    display: block;
+    text-align: center;
+    font-size: 14px;
+    margin-top: 10px;
+}
+
+.alert {
+    font-size: 14px;
 }
 
 /* Admin dashbord */
@@ -325,4 +353,23 @@ body {
 .admin-icon {
   margin-right: 10px;
   font-size: 1.5em;
+}
+/* Star */
+.star-rating {
+  display: flex;
+  align-items: center; /* Căn giữa các sao theo chiều dọc */
+  margin-bottom: 0px; /* Khoảng cách dưới sao */
+}
+
+.rating-count {
+  font-size: 0.9em;
+  color: #666;
+  margin-left: 5px; /* Khoảng cách giữa sao và số lượng đánh giá */
+  align-self: center; /* Căn giữa theo chiều dọc */
+ 
+}
+
+
+.star-rating .icon {
+  margin-right: 0.2rem;
 }
