@@ -34,7 +34,7 @@ const Bookings = () => {
 
 	return (
 		<section style={{ backgroundColor: "whitesmoke" }}>
-		<h1 className="text-center">Bookings</h1>
+		<h1 className="text-centerr">Bookings</h1>
 			{error && <div className="text-danger">{error}</div>}
 			{isLoading ? (
 				<div>Loading existing bookings</div>

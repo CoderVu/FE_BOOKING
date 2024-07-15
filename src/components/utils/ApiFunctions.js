@@ -323,3 +323,11 @@ export const rateRoom = async (userId, roomId, bookingId, starRating, comment) =
       throw new Error("Error rating room");
   }
 };
+export const getRoomReviews = async (roomId) => {
+  try {
+    const response = await axios.get(`/api/v1/rooms/room/${roomId}/reviews`);
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error fetching room reviews: ${error.message}`);
+  }
+};

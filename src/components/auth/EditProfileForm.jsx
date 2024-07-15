@@ -9,22 +9,28 @@ const EditProfileForm = ({ user, setUser }) => {
     phone: user.phone,
     password: "",
   });
+  const [avatar, setAvatar] = useState(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
+  const handleFileChange = (e) => {
+    setAvatar(e.target.files[0]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formDataObj = new FormData();
+    formDataObj.append("user", JSON.stringify(formData));
+    if (avatar) {
+      formDataObj.append("avatar", avatar);
+    }
+
     try {
-      const updatedUser = await updateProfileUserById(user.id, {
-        firstName: formData.firstName,
-        lastName: formData.lastName,
-        email: formData.email,
-        phone: formData.phone,
-        password: formData.password,
-      });
+      const updatedUser = await updateProfileUserById(user.id, formDataObj);
       setUser(updatedUser);
       alert("Profile updated successfully!");
     } catch (error) {
@@ -101,6 +107,18 @@ const EditProfileForm = ({ user, setUser }) => {
           name="password"
           value={formData.password}
           onChange={handleChange}
+        />
+      </div>
+      <div className="mb-3">
+        <label htmlFor="avatar" className="form-label">
+          Avatar
+        </label>
+        <input
+          type="file"
+          className="form-control"
+          id="avatar"
+          name="avatar"
+          onChange={handleFileChange}
         />
       </div>
       <button type="submit" className="btn btn-primary">

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { bookRoom, getRoomById } from "../utils/ApiFunctions";
 import { useParams, useHistory } from 'react-router-dom';
 import { Form, Button, Col, Row } from "react-bootstrap";
-import BookingSummary from "./BookingSumary"
+import BookingSummary from "../bookings/BookingSumary"
 import moment from "moment";
 
 const BookingForm = () => {
@@ -13,6 +13,7 @@ const BookingForm = () => {
     const [booking, setBooking] = useState({
         guestName: "",
         guestEmail: "",
+        numbẻPhone: "",
         checkInDate: "",
         checkOutDate: "",
         numOfAdults: "",
@@ -31,8 +32,7 @@ const BookingForm = () => {
         try {
             const response = await getRoomById(roomId);
             setRoomPrice(response.roomPrice);
-        }
-        catch (err) {
+        } catch (err) {
             console.error("Error fetching room price:", err);
         }
     }
@@ -51,7 +51,7 @@ const BookingForm = () => {
         const adultCount = parseInt(booking.numOfAdults);
         const childrenCount = parseInt(booking.numOfChildren);
         const totalCount = adultCount + childrenCount;
-        return totalCount >= 1 && childrenCount >=1;
+        return totalCount >= 1 && childrenCount >= 1;
     }
 
     const isCheckOutDateValid = () => {
@@ -63,8 +63,7 @@ const BookingForm = () => {
         const form = e.currentTarget;
         if (form.checkValidity() === false || !isGuestCountValid() || !isCheckOutDateValid()) {
             e.stopPropagation();
-        }
-        else {
+        } else {
             setIsSubmitted(true);
         }
         setIsValidated(true);
@@ -80,7 +79,6 @@ const BookingForm = () => {
             history.push("/", { error: errorMessages });
         }
     }
-    
 
     return (
         <>
@@ -88,7 +86,7 @@ const BookingForm = () => {
                 <div className="row">
                     <div className="col-md-6">
                         <div className="card card-body mt-5">
-                            <h4 className="card-title" style={{textAlign:'center'}}>Reserve Room</h4>
+                            <h4 className="card-title" style={{ textAlign: 'center' }}>Reserve Room</h4>
                             <Form noValidate validated={isValidated} onSubmit={handleSubmit}>
                                 <Form.Group>
                                     <Form.Label htmlFor="guestName">Full Name:</Form.Label>
@@ -119,6 +117,21 @@ const BookingForm = () => {
                                     />
                                     <Form.Control.Feedback type="invalid">
                                         Please enter your email address
+                                    </Form.Control.Feedback>
+                                </Form.Group>
+                                <Form.Group>
+                                    <Form.Label htmlFor="numberPhone">Phone Number:</Form.Label>
+                                    <Form.Control
+                                        type="text"
+                                        id="numberPhone"
+                                        name="numberPhone"
+                                        value={booking.numberPhone}
+                                        placeholder="Enter your phone number"
+                                        onChange={handleInputChange}
+                                        required
+                                    />
+                                    <Form.Control.Feedback type="invalid">
+                                        Please enter your phone number
                                     </Form.Control.Feedback>
                                 </Form.Group>
 
@@ -173,7 +186,7 @@ const BookingForm = () => {
                                     </Form.Group>
 
                                     <Form.Group as={Col}>
-                                        <Form.Label htmlFor="numberOfChildren">Children:</Form.Label>
+                                        <Form.Label htmlFor="numOfChildren">Children:</Form.Label>
                                         <Form.Control
                                             type="number"
                                             id="numOfChildren"
@@ -201,6 +214,7 @@ const BookingForm = () => {
                                 booking={booking}
                                 payment={calculatePayment()}
                                 isFormValid={isValidated}
+                                // Pass onConfirm handler to BookingSummary
                                 onConfirm={handleBooking}
                             />
                         )}

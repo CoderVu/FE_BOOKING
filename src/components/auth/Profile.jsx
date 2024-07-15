@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { deleteUser, getUserBookingsByEmail, getUser, rateRoom } from "../utils/ApiFunctions";
+import { deleteUser, getUserBookingsByEmail, getUser, rateRoom, cancelBooking, getAllBookings  } from "../utils/ApiFunctions";
 import { useHistory } from "react-router-dom";
 import moment from "moment";
 import EditProfileForm from "./EditProfileForm";
@@ -8,8 +8,10 @@ import { Modal, Button } from "react-bootstrap";
 
 const Profile = () => {
     const [user, setUser] = useState(null);
+    const [bookingInfo, setBookingInfo] = useState([])
     const [bookings, setBookings] = useState([]);
     const [message, setMessage] = useState("");
+
     const [errorMessage, setErrorMessage] = useState("");
     const [ratings, setRatings] = useState({});
     const [showEditProfileModal, setShowEditProfileModal] = useState(false);
@@ -76,6 +78,16 @@ const Profile = () => {
             }
         }
     };
+    
+	const handleBookingCancellation = async (bookingId) => {
+		try {
+			await cancelBooking(bookingId)
+			const data = await getAllBookings()
+			setBookingInfo(data)
+		} catch (error) {
+			setErrorMessage(error.message)
+		}
+	}
 
     const handleEditProfile = () => {
         setShowEditProfileModal(true);
@@ -212,7 +224,7 @@ const Profile = () => {
                                     <div className="col-md-2">
                                         <div className="d-flex justify-content-center align-items-center mb-4">
                                             <img
-                                                src={user.profileImage || "https://themindfulaimanifesto.org/wp-content/uploads/2020/09/male-placeholder-image.jpeg"}
+                                                src={user.avatar ? `data:image/png;base64,${user.avatar}` : "https://themindfulaimanifesto.org/wp-content/uploads/2020/09/male-placeholder-image.jpeg"}
                                                 alt="Profile"
                                                 className="rounded-circle"
                                                 style={{ width: "150px", height: "150px", objectFit: "cover" }}
@@ -286,6 +298,7 @@ const Profile = () => {
                         <th>Comment</th>
                         <th>Date Rated</th>
                         <th>Rated</th>
+                        <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -318,6 +331,9 @@ const Profile = () => {
                             </td>
                             <td>{moment(ratings[booking.room.id]?.[booking.bookingId]?.createdAt).format("MMM Do, YYYY HH:mm:ss") || ""}</td>
                             <td>{ratings[booking.room.id]?.[booking.bookingId]?.rated ? "YES" : "NO"}</td>
+                            <td>
+                                <button className="btn btn-danger btn-sm" onClick={() => handleBookingCancellation(booking.bookingId)}>Cancel</button>
+                            </td>
                         </tr>
                     ))}
                 </tbody>
