@@ -12,17 +12,26 @@ export const getHeader = () => {
 
 
 // This function adds a new room
-export async function AddRoom(photo, roomType, roomPrice) {
+export async function AddRoom(photo, roomType, roomPrice, description) {
   const formData = new FormData();
   formData.append("photo", photo);
   formData.append("roomType", roomType);
   formData.append("roomPrice", roomPrice);
+  formData.append("description", description);
+
+  console.log("FormData to send:");
+  formData.forEach((value, key) => {
+    console.log(key, value);
+  });
 
   try {
-    const response = await axios.post("/api/v1/rooms/add/new-room", formData, {
-      headers: getHeader()
+    const headers = getHeader();
+    console.log("Headers:", headers);
 
+    const response = await axios.post("/api/v1/rooms/add/new-room", formData, {
+      headers: headers
     });
+
     if (response.status === 200 || response.status === 201) {
       return true;
     } else {
@@ -31,6 +40,26 @@ export async function AddRoom(photo, roomType, roomPrice) {
   } catch (error) {
     console.error("Error adding room:", error);
     return false;
+  }
+}
+
+// This function updates a room in the database
+export async function updateRoom(roomId, roomData) {
+  const formData = new FormData();
+  formData.append("roomType", roomData.roomType);
+  formData.append("roomPrice", roomData.roomPrice);
+  formData.append("photo", roomData.photo);
+  formData.append("description", roomData.description);
+  try {
+    const headers = getHeader(); // Lấy headers từ hàm getHeader()
+    console.log(headers); // In ra console.log
+    const response = await axios.put(`/api/v1/rooms/update/${roomId}`, formData, {
+      headers: headers // Sử dụng headers trong yêu cầu
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Error updating room:", error);
+    throw new Error("Error updating room");
   }
 }
 
@@ -73,25 +102,7 @@ export async function deleteRoom(roomId) {
   }
 }
 
-// This function updates a room in the database
-export async function updateRoom(roomId, roomData) {
-  const formData = new FormData();
-  formData.append("roomType", roomData.roomType);
-  formData.append("roomPrice", roomData.roomPrice);
-  formData.append("photo", roomData.photo);
-  formData.append("description", roomData.description);
-  try {
-    const headers = getHeader(); // Lấy headers từ hàm getHeader()
-    console.log(headers); // In ra console.log
-    const response = await axios.put(`/api/v1/rooms/update/${roomId}`, formData, {
-      headers: headers // Sử dụng headers trong yêu cầu
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error updating room:", error);
-    throw new Error("Error updating room");
-  }
-}
+
 
 // This function gets a room by its ID
 /* This funcction gets a room by the id */

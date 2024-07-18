@@ -10,7 +10,8 @@ const AddRoomComponent = () => {
   const [newRoom, setNewRoom] = useState({
     photo: null,
     roomType: "",
-    roomPrice: ""
+    roomPrice: "",
+    description: ""
   });
   const [imagePreview, setImagePreview] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
@@ -37,8 +38,9 @@ const AddRoomComponent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log("New Room Data:", newRoom); // In ra dữ liệu của phòng mới trước khi gọi API
     try {
-      const success = await AddRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice);
+      const success = await AddRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice, newRoom.description);
       if (success) {
         setSuccessMessage("Room added successfully");
         setNewRoom({ photo: null, roomPrice: "", roomType: "" });
@@ -71,6 +73,17 @@ const AddRoomComponent = () => {
                 type="number"
                 name="roomPrice"
                 value={newRoom.roomPrice}
+                onChange={handleRoomInputChange}
+              />
+            </div>
+            <div className="mb-3">
+              <label htmlFor="description" className="form-label">Description</label>
+              <textarea
+                className="form-control"
+                required
+                id="description"
+                name="description"
+                value={newRoom.description}
                 onChange={handleRoomInputChange}
               />
             </div>
