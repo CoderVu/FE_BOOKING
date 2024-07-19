@@ -1,5 +1,5 @@
 <<<<<<< HEAD
-Content from the current branch (master)
+Nội dung từ nhánh của bạn
 =======
-Content from the branch being merged
->>>>>>> other-branch-name
+Nội dung từ nhánh remote
+>>>>>>> branch-name
