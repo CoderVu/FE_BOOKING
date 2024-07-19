@@ -38,7 +38,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "gh-pages -d build -r https://github.com/CoderVu/WebBookingHotel.git"
   },
   "proxy": "http://localhost:8081",
   "eslintConfig": {
@@ -59,8 +59,8 @@
       "last 1 safari version"
     ]
   },
+  "homepage": "https://codervu.github.io/WebBookingHotel",
   "devDependencies": {
     "gh-pages": "^6.1.1"
-  },
-  "homepage": "https://codervu.github.io/WebBookingHotel"
+  }
 }
