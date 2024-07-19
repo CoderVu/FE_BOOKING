@@ -40,9 +40,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-
   "proxy": "http://localhost:8081",
-  
   "eslintConfig": {
     "extends": [
       "react-app",
@@ -62,7 +60,7 @@
     ]
   },
   "devDependencies": {
-      "gh-pages": "^6.1.1"
+    "gh-pages": "^6.1.1"
   },
   "homepage": "https://codervu.github.io/WebBookingHotel"
 }
