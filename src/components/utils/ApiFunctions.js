@@ -1,6 +1,6 @@
-import axios from "axios";
+import api from "api";
 
-export const api = axios.create({
+export const api = api.create({
 	baseURL: "https://be-hotel.onrender.com"
 })
 
@@ -28,7 +28,7 @@ export async function AddRoom(photo, roomType, roomPrice, description) {
     const headers = getHeader();
     console.log("Headers:", headers);
 
-    const response = await axios.post("/api/v1/rooms/add/new-room", formData, {
+    const response = await api.post("/api/v1/rooms/add/new-room", formData, {
       headers: headers
     });
 
@@ -53,7 +53,7 @@ export async function updateRoom(roomId, roomData) {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await axios.put(`/api/v1/rooms/update/${roomId}`, formData, {
+    const response = await api.put(`/api/v1/rooms/update/${roomId}`, formData, {
       headers: headers // Sử dụng headers trong yêu cầu
     });
     return response.data;
@@ -92,7 +92,7 @@ export async function deleteRoom(roomId) {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await axios.delete(`/api/v1/rooms/delete/room/${roomId}`, {
+    const response = await api.delete(`/api/v1/rooms/delete/room/${roomId}`, {
       headers: headers // Sử dụng headers trong yêu cầu
     });
     return response.data;
@@ -136,7 +136,7 @@ export async function getAllBookings() {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await axios.get("/api/v1/bookings/all-bookings", {
+    const response = await api.get("/api/v1/bookings/all-bookings", {
       headers: headers // Sử dụng headers trong yêu cầu
     });
     return response.data;
@@ -151,7 +151,7 @@ export async function getBookingByConfirmationCode(confirmationCode) {
 	try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-		const result = await axios.get(`/api/v1/bookings/confirmation/${confirmationCode}`,{
+		const result = await api.get(`/api/v1/bookings/confirmation/${confirmationCode}`,{
       headers: headers
     });
 		return result.data
@@ -169,7 +169,7 @@ export async function cancelBooking(bookingId) {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await axios.delete(`/api/v1/bookings/booking/${bookingId}/delete`, {
+    const response = await api.delete(`/api/v1/bookings/booking/${bookingId}/delete`, {
       headers: headers
     });
     return response.data;
@@ -218,7 +218,7 @@ export async function loginUser(login) {
 export const resetPassword = (email) => {
   const headers = getHeader(); 
   console.log(headers); 
-  return axios.post('/api/v1/auth/reset-password', null, {
+  return api.post('/api/v1/auth/reset-password', null, {
     headers: headers, 
     params: {
       email: email
@@ -230,7 +230,7 @@ export const confirmResetPassword = (email,otp, newPassword) => {
   try {
     const headers = getHeader();
     console.log(headers); 
-    const response = axios.post('/api/v1/auth/confirm-reset-password', null, {
+    const response = api.post('/api/v1/auth/confirm-reset-password', null, {
       headers: headers, 
       params: {
         email: email,
@@ -296,7 +296,7 @@ export async function updateProfileUserById(userId, userData) {
   try {
     const headers = getHeader();
     console.log(headers);
-    const response = await axios.post(`/api/v1/auth/update-user/${userId}`, userData, {
+    const response = await api.post(`/api/v1/auth/update-user/${userId}`, userData, {
       headers: headers
     });
     return response.data;
@@ -318,7 +318,7 @@ export const rateRoom = async (userId, roomId, bookingId, starRating, comment) =
       console.log('comment:', comment);
 
       // Gửi yêu cầu POST với các tham số dạng query
-      const response = await axios.post(`/api/v1/ratings/rate`, null, {
+      const response = await api.post(`/api/v1/ratings/rate`, null, {
           params: {
               userId: userId,
               roomId: roomId,
@@ -336,7 +336,7 @@ export const rateRoom = async (userId, roomId, bookingId, starRating, comment) =
 };
 export const getRoomReviews = async (roomId) => {
   try {
-    const response = await axios.get(`/api/v1/rooms/room/${roomId}/reviews`);
+    const response = await api.get(`/api/v1/rooms/room/${roomId}/reviews`);
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching room reviews: ${error.message}`);
