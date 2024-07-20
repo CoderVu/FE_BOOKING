@@ -1,6 +1,6 @@
-import api from "api";
+import axios from "axios";
 
-export const api = api.create({
+export const api = axios.create({
 	baseURL: "https://be-hotel.onrender.com"
 })
 
