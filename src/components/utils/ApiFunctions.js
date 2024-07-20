@@ -39,7 +39,7 @@ export async function AddRoom(photo, roomType, roomPrice, description) {
   }
 }
 
-// This function updates a room in the database
+// This function updates a room in the databases
 export async function updateRoom(roomId, roomData) {
   const formData = new FormData();
   formData.append("roomType", roomData.roomType);
