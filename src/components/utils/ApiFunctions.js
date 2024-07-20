@@ -1,9 +1,5 @@
 import axios from "axios";
 
-export const api = axios.create({
-	baseURL: "https://be-hotel.onrender.com"
-})
-
 export const getHeader = () => {
   const token = localStorage.getItem("token");
   return token ? { Authorization: `Bearer ${token}` } : {}; // Trả về header chứa token nếu tồn tại
@@ -28,7 +24,7 @@ export async function AddRoom(photo, roomType, roomPrice, description) {
     const headers = getHeader();
     console.log("Headers:", headers);
 
-    const response = await api.post("/api/v1/rooms/add/new-room", formData, {
+    const response = await axios.post("https://be-hotel.onrender.com/api/v1/rooms/add/new-room", formData, {
       headers: headers
     });
 
@@ -53,7 +49,7 @@ export async function updateRoom(roomId, roomData) {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await api.put(`/api/v1/rooms/update/${roomId}`, formData, {
+    const response = await axios.put(`https://be-hotel.onrender.com/api/v1/rooms/update/${roomId}`, formData, {
       headers: headers // Sử dụng headers trong yêu cầu
     });
     return response.data;
@@ -66,7 +62,7 @@ export async function updateRoom(roomId, roomData) {
 // This function gets all room types from the database
 export async function getRoomTypes() {
   try {
-    const response = await api.get("/api/v1/rooms/room/types");
+    const response = await axios.get("https://be-hotel.onrender.com/api/v1/rooms/room/types");
     return response.data;
   } catch (error) {
     console.error("Error fetching room types:", error);
@@ -79,7 +75,7 @@ export async function getRoomTypes() {
 // This function gets all rooms from the database
 export async function getAllRooms() {
   try {
-    const result = await api.get("/api/v1/rooms/all-rooms");
+    const result = await axios.get("https://be-hotel.onrender.com/api/v1/rooms/all-rooms");
     return result.data;
   } catch (error) {
     console.error("Error fetching rooms:", error);
@@ -92,7 +88,7 @@ export async function deleteRoom(roomId) {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await api.delete(`/api/v1/rooms/delete/room/${roomId}`, {
+    const response = await axios.delete(`https://be-hotel.onrender.com/api/v1/rooms/delete/room/${roomId}`, {
       headers: headers // Sử dụng headers trong yêu cầu
     });
     return response.data;
@@ -108,7 +104,7 @@ export async function deleteRoom(roomId) {
 /* This funcction gets a room by the id */
 export async function getRoomById(roomId) {
 	try {
-		const result = await api.get(`/api/v1/rooms/room/${roomId}`)
+		const result = await axios.get(`https://be-hotel.onrender.com/api/v1/rooms/room/${roomId}`)
 		return result.data
 	} catch (error) {
 		throw new Error(`Error fetching room ${error.message}`)
@@ -119,7 +115,7 @@ export async function getRoomById(roomId) {
 // This function books a room
 export async function bookRoom(roomId, booking) {
 	try {
-		const response = await api.post(`/api/v1/bookings/room/${roomId}/bookings`, booking)
+		const response = await axios.post(`https://be-hotel.onrender.com/api/v1/bookings/room/${roomId}/bookings`, booking)
 		return response.data
 	} catch (error) {
 		if (error.response && error.response.data) {
@@ -136,7 +132,7 @@ export async function getAllBookings() {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await api.get("/api/v1/bookings/all-bookings", {
+    const response = await axios.get("https://be-hotel.onrender.com/api/v1/bookings/all-bookings", {
       headers: headers // Sử dụng headers trong yêu cầu
     });
     return response.data;
@@ -151,7 +147,7 @@ export async function getBookingByConfirmationCode(confirmationCode) {
 	try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-		const result = await api.get(`/api/v1/bookings/confirmation/${confirmationCode}`,{
+		const result = await axios.get(`https://be-hotel.onrender.com/api/v1/bookings/confirmation/${confirmationCode}`,{
       headers: headers
     });
 		return result.data
@@ -169,7 +165,7 @@ export async function cancelBooking(bookingId) {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await api.delete(`/api/v1/bookings/booking/${bookingId}/delete`, {
+    const response = await axios.delete(`https://be-hotel.onrender.com/api/v1/bookings/booking/${bookingId}/delete`, {
       headers: headers
     });
     return response.data;
@@ -180,8 +176,7 @@ export async function cancelBooking(bookingId) {
 
 // This function gets available rooms for a given date range and room type
 export async function getAvailableRooms(checkInDate, checkOutDate, roomType) {
-	const result = await api.get(
-		`/api/v1/rooms/available-rooms?checkInDate=${checkInDate}
+	const result = await axios.get(`https://be-hotel.onrender.com/api/v1/rooms/available-rooms?checkInDate=${checkInDate}
 		&checkOutDate=${checkOutDate}&roomType=${roomType}`
 	)
 	return result
@@ -190,7 +185,7 @@ export async function getAvailableRooms(checkInDate, checkOutDate, roomType) {
 // This function registers a new user
 export async function registerUser(registration) {
   try {
-    const response = await api.post("/api/v1/auth/register-user", registration);
+    const response = await axios.post("https://be-hotel.onrender.com/api/v1/auth/register-user", registration);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {
@@ -204,7 +199,7 @@ export async function registerUser(registration) {
 // This function logs in a registered user
 export async function loginUser(login) {
   try {
-    const response = await api.post("/api/v1/auth/login", login);
+    const response = await axios.post("https://be-hotel.onrender.com/api/v1/auth/login", login);
     if (response.status >= 200 && response.status < 300) {
       return response.data;
     } else {
@@ -218,7 +213,7 @@ export async function loginUser(login) {
 export const resetPassword = (email) => {
   const headers = getHeader(); 
   console.log(headers); 
-  return api.post('/api/v1/auth/reset-password', null, {
+  return axios.post('https://be-hotel.onrender.com/api/v1/auth/reset-password', null, {
     headers: headers, 
     params: {
       email: email
@@ -230,7 +225,7 @@ export const confirmResetPassword = (email,otp, newPassword) => {
   try {
     const headers = getHeader();
     console.log(headers); 
-    const response = api.post('/api/v1/auth/confirm-reset-password', null, {
+    const response = axios.post('https://be-hotel.onrender.com/api/v1/auth/confirm-reset-password', null, {
       headers: headers, 
       params: {
         email: email,
@@ -250,7 +245,7 @@ export async function getUserProfile(userId) {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await api.get(`/api/v1/users/profile/${userId}`, {
+    const response = await axios.get(`https://be-hotel.onrender.com/api/v1/users/profile/${userId}`, {
       headers: headers
     });
     return response.data;
@@ -262,7 +257,7 @@ export async function getUserProfile(userId) {
 // This function deletes a user
 export async function deleteUser(userId) {
   try {
-    const response = await api.delete(`/api/v1/users/delete/${userId}`, {
+    const response = await axios.delete(`https://be-hotel.onrender.com/api/v1/users/delete/${userId}`, {
       headers: getHeader()
     });
     return response.data;
@@ -274,7 +269,7 @@ export async function deleteUser(userId) {
 // This function gets a single user
 export async function getUser(userId) {
   try {
-    const response = await api.get(`/api/v1/users/${userId}`, {
+    const response = await axios.get(`https://be-hotel.onrender.com/api/v1/users/${userId}`, {
       headers: getHeader()
     });
     return response.data;
@@ -286,7 +281,7 @@ export async function getUser(userId) {
 // This function gets user bookings by email
 export async function getUserBookingsByEmail(email) {
   try {
-    const response = await api.get(`/api/v1/bookings/history-booking/email/${email}`);
+    const response = await axios.get(`https://be-hotel.onrender.com/api/v1/bookings/history-booking/email/${email}`);
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching user bookings: ${error.message}`);
@@ -296,7 +291,7 @@ export async function updateProfileUserById(userId, userData) {
   try {
     const headers = getHeader();
     console.log(headers);
-    const response = await api.post(`/api/v1/auth/update-user/${userId}`, userData, {
+    const response = await axios.post(`https://be-hotel.onrender.com/api/v1/auth/update-user/${userId}`, userData, {
       headers: headers
     });
     return response.data;
@@ -318,7 +313,7 @@ export const rateRoom = async (userId, roomId, bookingId, starRating, comment) =
       console.log('comment:', comment);
 
       // Gửi yêu cầu POST với các tham số dạng query
-      const response = await api.post(`/api/v1/ratings/rate`, null, {
+      const response = await axios.post(`https://be-hotel.onrender.com/api/v1/ratings/rate`, null, {
           params: {
               userId: userId,
               roomId: roomId,
@@ -336,7 +331,7 @@ export const rateRoom = async (userId, roomId, bookingId, starRating, comment) =
 };
 export const getRoomReviews = async (roomId) => {
   try {
-    const response = await api.get(`/api/v1/rooms/room/${roomId}/reviews`);
+    const response = await axios.get(`https://be-hotel.onrender.com/api/v1/rooms/room/${roomId}/reviews`);
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching room reviews: ${error.message}`);
