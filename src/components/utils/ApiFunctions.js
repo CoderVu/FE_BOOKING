@@ -72,14 +72,14 @@ export async function getRoomTypes() {
 }
 
 
-// This function gets all rooms from the database
+// This function gets all rooms from the databasee
 export async function getAllRooms() {
   try {
     const result = await axios.get("https://be-hotel.onrender.com/api/v1/rooms/all-rooms");
     return result.data;
   } catch (error) {
-    console.error("Error fetching rooms:", error);
-    throw new Error(`Error fetching rooms: ${error.message}`);
+    console.error("Errorr fetching rooms:", error);
+    throw new Error(`Errorr fetching rooms: ${error.message}`);
   }
 }
 
