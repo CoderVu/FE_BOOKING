@@ -40,7 +40,7 @@
     "predeploy": "npm run build",
     "deploy": "gh-pages -d build"
   },
-  "proxy": "http://localhost:8081",
+  "proxy": "https://be-hotel.onrender.com",
   "eslintConfig": {
     "extends": [
       "react-app",

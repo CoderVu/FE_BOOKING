@@ -98,7 +98,7 @@ const BookingSummary = ({ booking, isFormValid, onConfirm }) => {
             {isProcessingPayment ? (
               <>
                 <span className="spinner-border spinner-border-sm mr-2" role="status" aria-hidden="true"></span>
-                Booking confirmed, redirecting to payment...
+                <span>Processing Payment...</span>
               </>
             ) : (
               "Confirm Booking and Process Payment"
