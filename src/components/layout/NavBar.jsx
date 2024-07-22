@@ -5,6 +5,7 @@ import "../styles/index.css";
 
 const NavBar = () => {
   const [showAccount, setShowAccount] = useState(false);
+  const [navbarOpen, setNavbarOpen] = useState(false);
   const currentUser = localStorage.getItem("userId");
   const isLoggedIn = !!localStorage.getItem("token");
   const userRole = localStorage.getItem("userRole");
@@ -12,6 +13,10 @@ const NavBar = () => {
   const handleAccountClick = (e) => {
     e.preventDefault();
     setShowAccount(!showAccount);
+  };
+
+  const toggleNavbar = () => {
+    setNavbarOpen(!navbarOpen);
   };
 
   return (
@@ -24,16 +29,15 @@ const NavBar = () => {
         <button
           className="navbar-toggler"
           type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarScroll"
+          onClick={toggleNavbar}
           aria-controls="navbarScroll"
-          aria-expanded="false"
+          aria-expanded={navbarOpen}
           aria-label="Toggle navigation"
         >
           <span className="navbar-toggler-icon"></span>
         </button>
 
-        <div className="collapse navbar-collapse" id="navbarScroll">
+        <div className={`collapse navbar-collapse ${navbarOpen ? "show" : ""}`} id="navbarScroll">
           <ul className="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll">
             <li className="nav-item">
               <NavLink className="nav-link" aria-current="page" to="/browse-all-rooms">
@@ -51,7 +55,7 @@ const NavBar = () => {
             {isLoggedIn && userRole === "ROLE_SUPPERUSER" && (
               <li className="nav-item">
                 <NavLink className="nav-link" aria-current="page" to="/supperuser">
-                 SUPER ADMIN
+                  SUPER ADMIN
                 </NavLink>
               </li>
             )}
@@ -67,7 +71,7 @@ const NavBar = () => {
             <li className="nav-item dropdown">
               <a
                 className={`nav-link dropdown-toggle text-success ${showAccount ? "active" : ""}`}
-                href="."
+                href="/"
                 role="button"
                 aria-expanded={showAccount}
                 onClick={handleAccountClick}

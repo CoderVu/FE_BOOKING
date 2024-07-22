@@ -189,11 +189,11 @@ export async function getAllBookings() {
 }
 // 
 // This function gets all bookings by hotel ID
-export async function getBookingsByHotelId(hotelId) {
+export async function getBookingsByAdminId(adminId) {
   try {
     const headers = getHeader();
     console.log(headers);
-    const response = await axios.get(`/api/v1/booking/all-bookingOfOneHotel/${hotelId}`, {
+    const response = await axios.get(`/api/v1/booking/all-bookingOfOneHotel/${adminId}`, {
       headers: headers
     });
     return response.data;
@@ -235,9 +235,9 @@ export async function cancelBooking(bookingId) {
 }
 
 // This function gets available rooms for a given date range and room type
-export async function getAvailableRooms(checkInDate, checkOutDate, roomType) {
+export async function getAvailableRooms(checkInDate, checkOutDate, roomType, address ) {
 	const result = await axios.get(`/api/v1/rooms/available-rooms?checkInDate=${checkInDate}
-		&checkOutDate=${checkOutDate}&roomType=${roomType}`
+		&checkOutDate=${checkOutDate}&roomType=${roomType}&address=${address}`
 	)
 	return result
 }
@@ -364,7 +364,7 @@ export async function updateProfileUserById(userId, userData) {
   try {
     const headers = getHeader();
     console.log(headers);
-    const response = await axios.post(`/api/v1/auth/update-user/${userId}`, userData, {
+    const response = await axios.post(`/api/v1/auth/user/update-user/${userId}`, userData, {
       headers: headers
     });
     return response.data;

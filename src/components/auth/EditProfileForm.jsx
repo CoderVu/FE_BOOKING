@@ -1,15 +1,27 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { updateProfileUserById } from "../utils/ApiFunctions";
 
 const EditProfileForm = ({ user, setUser }) => {
   const [formData, setFormData] = useState({
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    phone: user.phone,
+    firstName: user?.firstName || "",
+    lastName: user?.lastName || "",
+    email: user?.email || "",
+    phone: user?.phone || "",
     password: "",
   });
   const [avatar, setAvatar] = useState(null);
+
+  useEffect(() => {
+    if (user) {
+      setFormData({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+        password: "",
+      });
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -31,11 +43,16 @@ const EditProfileForm = ({ user, setUser }) => {
 
     try {
       const updatedUser = await updateProfileUserById(user.id, formDataObj);
-      setUser(updatedUser);
-      alert("Profile updated successfully!");
+      if (updatedUser) {
+        setUser(updatedUser);
+        window.location.reload(); // Tải lại trang sau khi cập nhật thành công
+      } else {
+        console.error("No user returned from update");
+        // Consider adding user feedback here
+      }
     } catch (error) {
-      console.error("Error updating profile:", error.message);
-      alert("Failed to update profile. Please try again later.");
+      console.error("Failed to update profile:", error);
+      // Consider adding user feedback here
     }
   };
 

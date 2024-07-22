@@ -125,18 +125,23 @@ const ExistingRooms = () => {
 
   return (
     <>
-      <Button variant="primary" onClick={handleShowModal}>
-        Add Hotel
+      <Button variant="primary" onClick={handleShowModal} style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              padding: '10px',
+              marginLeft: '20px', 
+              marginTop: '20px'}}>
+        Thêm khách sạn
       </Button>
 
       <Modal show={showModal} onHide={handleCloseModal}>
         <Modal.Header closeButton>
-          <Modal.Title>Add a New Hotel</Modal.Title>
+          <Modal.Title>Thêm khách sạn</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <Form onSubmit={handleAddHotel}>
             <Form.Group className="mb-3" controlId="hotelName">
-              <Form.Label>Hotel Name</Form.Label>
+              <Form.Label>Tên khách sạn</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter hotel name"
@@ -146,7 +151,7 @@ const ExistingRooms = () => {
               />
             </Form.Group>
             <Form.Group className="mb-3" controlId="hotelAddress">
-              <Form.Label>Address</Form.Label>
+              <Form.Label>Địa chỉ</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter address"
@@ -155,12 +160,27 @@ const ExistingRooms = () => {
                 required
               />
             </Form.Group>
-            <Button variant="secondary" onClick={handleCloseModal}>
-              Close
-            </Button>
-            <Button variant="primary" type="submit">
-              Add Hotel
-            </Button>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              padding: '10px', 
+              marginTop: '20px'
+            }}>
+              <Button 
+                variant="secondary" 
+                onClick={handleCloseModal} 
+                style={{ flex: '1', marginRight: '10px' }}
+              >
+                Đóng
+              </Button>
+              <Button 
+                variant="primary" 
+                type="submit" 
+                style={{ flex: '1', marginLeft: '10px' }}
+              >
+                Thêm
+              </Button>
+            </div>
           </Form>
         </Modal.Body>
       </Modal>
@@ -169,12 +189,14 @@ const ExistingRooms = () => {
         <p className="text-center">Loading existing rooms</p>
       ) : (
         <section className="mt-5 mb-5 container">
+             <h2>Danh sách phòng </h2>
           <div className="d-flex justify-content-between mb-3 mt-5">
-            <h2>Existing Rooms</h2>
+         
           </div>
           <div className="d-flex justify-content-end mb-3 mt-5">
             <Link to={"/add-room"}>
-              <FaPlus /> Add room
+              {/* <FaPlus />  */}
+              <Button variant="primary">Thêm phòng</Button>
             </Link>
           </div>
 

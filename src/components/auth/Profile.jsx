@@ -24,7 +24,7 @@ const Profile = () => {
             try {
                 const userId = localStorage.getItem("userId");
                 const token = localStorage.getItem("token");
-              
+
                 const userData = await getUser(userId, token);
                 setUser(userData);
 
@@ -78,6 +78,18 @@ const Profile = () => {
             }
         }
     };
+    function getRoleDisplayName(roleName) {
+        switch (roleName) {
+          case "ROLE_USER":
+            return "Khách hàng";
+          case "ROLE_ADMIN":
+            return "Chủ khách sạn";
+          case "ROLE_SUPPERUSER":
+            return "Quản trị viên";
+          default:
+            return "";
+        }
+      }
     
 	const handleBookingCancellation = async (bookingId) => {
 		try {
@@ -269,17 +281,17 @@ const Profile = () => {
                                                 </div>
                                             </div>
                                             <hr />
-                                            <div className="form-group row">
+                                                                                  <div className="form-group row">
 												<label className="col-md-2 col-form-label fw-bold">Vài trò:</label>
 												<div className="col-md-10">
-													<ul className="list-unstyled">
-														{user.roles.map((role) => (
-															<li key={role.id} className="card-text">
-																{role.name === "ROLE_USER" ? "Khách hàng" : role.name === "ROLE_ADMIN" ? "Chủ khách sạn" : role.name ==="ROLE_SUPPERUSER" ? "Quản trị viên" : ""}
-															</li>
-														))}
-													</ul>
-												</div>
+                                                <ul className="list-unstyled">
+                                                    {user.roles?.length > 0 && (
+                                                        <li className="card-text">
+                                                            {getRoleDisplayName(user.roles[0].name)}
+                                                        </li>
+                                                    )}
+                                                </ul>
+                                                </div>
 											</div>
                                             <hr />
                                             

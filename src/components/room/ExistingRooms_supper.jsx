@@ -101,11 +101,11 @@ const ExistingRooms_supper = () => {
           <div className="d-flex justify-content-between mb-3 mt-5">
             <h2>Existing Rooms</h2>
           </div>
-          <div className="d-flex justify-content-end mb-3 mt-5">
+          {/* <div className="d-flex justify-content-end mb-3 mt-5">
             <Link to={"/add-room"}>
               <FaPlus /> Add room
             </Link>
-          </div>
+          </div> */}
 
           <div className="mb-3">
             <RoomFilter data={rooms} setFilteredData={setFilteredRooms} />

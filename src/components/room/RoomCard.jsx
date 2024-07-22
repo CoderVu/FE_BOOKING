@@ -31,9 +31,11 @@ const RoomCard = ({ room }) => {
                             {room.roomPrice}
                             <span style={{ position: "relative", top: "-1px" }}> VNĐ/night</span>
                         </Card.Title>
-
+                        <Card.Text style={{ position: "relative" }}>{room.hotel.address} </Card.Text>
+				
+                        <Card.Text>{room.description}</Card.Text>
                         {/* Hiển thị sao và số lượng đánh giá */}
-                        <div className="d-flex align-items-center">
+                        <div className="d-flex align-items-center" > 
                             <div className="star-rating">
                                 {[...Array(fullStars)].map((_, i) => (
                                     <FaStar key={`full-${i}`} style={{ color: "gold" }} />
@@ -47,8 +49,9 @@ const RoomCard = ({ room }) => {
                                 {ratingCount} {ratingCount === 1 ? 'review' : 'reviews'}
                             </div>
                         </div>
+                       
+                    
 
-                        <Card.Text>{room.description}</Card.Text>
                     </div>
                     <div className="flex-shrink-0 mt-3">
                         <Link to={`/book-room/${room.id}`} className="btn btn-hotel btn-sm" style={{ color: "darkgoldenrod", fontFamily: "'Courier New', Courier, monospace", fontSize: "medium" }}>View/ Book Now</Link>

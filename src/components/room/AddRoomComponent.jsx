@@ -74,16 +74,16 @@ const AddRoomComponent = () => {
     <section className="container mt-5 mb-5">
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6">
-          <h2 className="mt-5 mb-2">Add a new room</h2>
+          <h2 className="mt-5 mb-2">Thêm phòng</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="roomType" className="form-label">Room Type</label>
+              <label htmlFor="roomType" className="form-label">Loại phòng</label>
               <div>
                 <RoomTypeSelector handleRoomInputChange={handleRoomInputChange} newRoom={newRoom} />
               </div>
             </div>
             <div className="mb-3">
-              <label htmlFor="roomPrice" className="form-label">Room Price</label>
+              <label htmlFor="roomPrice" className="form-label">Giá</label>
               <input
                 className="form-control"
                 required
@@ -95,7 +95,7 @@ const AddRoomComponent = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="description" className="form-label">Description</label>
+              <label htmlFor="description" className="form-label">Mô tả</label>
               <textarea
                 className="form-control"
                 required
@@ -106,7 +106,7 @@ const AddRoomComponent = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="photo" className="form-label">Room Photo</label>
+              <label htmlFor="photo" className="form-label">Ảnh phòng</label>
               <input
                 className="form-control"
                 required
@@ -127,7 +127,7 @@ const AddRoomComponent = () => {
               )}
             </div>
             <div className="mb-3">
-            <label htmlFor="hotelId" className="form-label">Hotel</label>
+            <label htmlFor="hotelId" className="form-label">Tên khách sạn</label>
             <select
               className="form-select"
               id="hotelId"
@@ -145,9 +145,9 @@ const AddRoomComponent = () => {
 
             <div className="d-grid d-md-flex mt-2">
               <Link to={"/existing-rooms"} className="btn btn-outline-primary ml-5">
-                Back
+                Hủy
               </Link>
-              <button className="btn btn-outline-primary ml-5" type="submit">Add Room</button>
+              <button className="btn btn-outline-primary ml-5" type="submit" style={{marginLeft:"20px"}}>Thêm</button>
             </div>
           </form>
           {successMessage && (

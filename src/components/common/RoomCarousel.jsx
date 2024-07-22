@@ -73,9 +73,13 @@ const RoomCarousel = () => {
                            						 {room.roomPrice}
                        							     <span style={{ position: "relative", top: "-1px" }}> VNĐ/night</span>
                     						    </Card.Title>
+
+												<Card.Text style={{ position: "relative", top: "-5px" }}>{room.hotel.address} </Card.Text>
+												
+								
 												
 												{/* Hiển thị sao và số lượng đánh giá */}
-												<div className="d-flex align-items-center">
+												<div className="d-flex align-items-center" style={{ position: "relative", bottom: "-25px", right:"-110px"}} >
 													{room.averageRating >= 0 && getStarRating(room.averageRating)}
 													<div className="rating-count">
 														({room.ratingCount} {room.ratingCount === 1 ? 'review' : 'reviews'})
