@@ -24,7 +24,7 @@ const Profile = () => {
             try {
                 const userId = localStorage.getItem("userId");
                 const token = localStorage.getItem("token");
-
+              
                 const userData = await getUser(userId, token);
                 setUser(userData);
 
@@ -268,6 +268,19 @@ const Profile = () => {
                                                     <p className="card-text">{user.phone}</p>
                                                 </div>
                                             </div>
+                                            <hr />
+                                            <div className="form-group row">
+												<label className="col-md-2 col-form-label fw-bold">Vài trò:</label>
+												<div className="col-md-10">
+													<ul className="list-unstyled">
+														{user.roles.map((role) => (
+															<li key={role.id} className="card-text">
+																{role.name === "ROLE_USER" ? "Khách hàng" : role.name === "ROLE_ADMIN" ? "Chủ khách sạn" : role.name ==="ROLE_SUPPERUSER" ? "Quản trị viên" : ""}
+															</li>
+														))}
+													</ul>
+												</div>
+											</div>
                                             <hr />
                                             
                                         </div>

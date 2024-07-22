@@ -1,24 +1,39 @@
-import axios from "axios";
-
-export const api = axios.create({
-	baseURL: "http://localhost:8081"
-})
+import axios from "../utils/axiosConfig";
 
 export const getHeader = () => {
-  const token = localStorage.getItem("token");
-  return token ? { Authorization: `Bearer ${token}` } : {}; // Trả về header chứa token nếu tồn tại
+  const token = localStorage.getItem('token');
+  const headers = {
+    'Content-Type': 'application/json',
+    
+  };
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+  return headers;
 };
 
+// Hàm này lấy tất cả các phòng từ cơ sở dữ liệu
+export async function getAllRooms() {
+  try {
+    const headers = getHeader(); // Sử dụng hàm getHeader để lấy headers
+    console.log("headers:", headers); // Debug: In ra headers
+    const result = await axios.get("/api/v1/rooms/all-rooms", { headers });
+    return result.data;
+  } catch (error) {
+    console.error("Error fetching rooms:", error);
+    throw new Error(`Error fetching rooms: ${error.message}`);
+  }
+}
 
 
 // This function adds a new room
-export async function AddRoom(photo, roomType, roomPrice, description) {
+export async function AddRoom(photo, roomType, roomPrice, description, hotelId) {
   const formData = new FormData();
   formData.append("photo", photo);
   formData.append("roomType", roomType);
   formData.append("roomPrice", roomPrice);
   formData.append("description", description);
-
+  formData.append("hotelId", hotelId); // Thêm hotelId vào formData
   console.log("FormData to send:");
   formData.forEach((value, key) => {
     console.log(key, value);
@@ -28,7 +43,7 @@ export async function AddRoom(photo, roomType, roomPrice, description) {
     const headers = getHeader();
     console.log("Headers:", headers);
 
-    const response = await axios.post("/api/v1/rooms/add/new-room", formData, {
+    const response = await axios.post("/api/v1/rooms/admin/add/new-room", formData, {
       headers: headers
     });
 
@@ -53,7 +68,7 @@ export async function updateRoom(roomId, roomData) {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await axios.put(`/api/v1/rooms/update/${roomId}`, formData, {
+    const response = await axios.put(`/api/v1/rooms/admin/update/${roomId}`, formData, {
       headers: headers // Sử dụng headers trong yêu cầu
     });
     return response.data;
@@ -66,7 +81,7 @@ export async function updateRoom(roomId, roomData) {
 // This function gets all room types from the database
 export async function getRoomTypes() {
   try {
-    const response = await api.get("/api/v1/rooms/room/types");
+    const response = await axios.get("/api/v1/rooms/room/types");
     return response.data;
   } catch (error) {
     console.error("Error fetching room types:", error);
@@ -76,14 +91,38 @@ export async function getRoomTypes() {
 }
 
 
-// This function gets all rooms from the database
-export async function getAllRooms() {
+
+export const getAllHotels = async () => {
   try {
-    const result = await api.get("/api/v1/rooms/all-rooms");
-    return result.data;
+    const response = await axios.get("/api/v1/hotel/all-hotels");
+    return response.data;
   } catch (error) {
-    console.error("Error fetching rooms:", error);
+    throw new Error(`Error fetching hotels: ${error.message}`);
+  }
+};
+export async function getAllRoomsByHotelId(hotelId) {
+  try {
+    const headers = getHeader();
+    console.log('Headers:', headers); // Debug: In headers
+    const response = await axios.get(`/api/v1/rooms/all-rooms/${hotelId}`, { headers });
+    console.log(`Rooms for hotel ${hotelId}:`, response.data); // Debug: In dữ liệu rooms
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching rooms for hotel ${hotelId}:`, error); // Debug: In lỗi
     throw new Error(`Error fetching rooms: ${error.message}`);
+  }
+}
+
+export async function getHotelsByManagerEmail(managerEmail) {
+  try {
+    const headers = getHeader();
+    console.log('Headers:', headers); // Debug: In headers
+    const response = await axios.get(`/api/v1/hotel/hotels/managed-by/${managerEmail}`, { headers });
+    console.log(`Hotels for manager ${managerEmail}:`, response.data); // Debug: In dữ liệu hotels
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching hotels for manager ${managerEmail}:`, error); // Debug: In lỗi
+    throw new Error(`Error fetching hotels: ${error.message}`);
   }
 }
 
@@ -108,7 +147,7 @@ export async function deleteRoom(roomId) {
 /* This funcction gets a room by the id */
 export async function getRoomById(roomId) {
 	try {
-		const result = await api.get(`/api/v1/rooms/room/${roomId}`)
+		const result = await axios.get(`/api/v1/rooms/room/${roomId}`)
 		return result.data
 	} catch (error) {
 		throw new Error(`Error fetching room ${error.message}`)
@@ -119,7 +158,11 @@ export async function getRoomById(roomId) {
 // This function books a room
 export async function bookRoom(roomId, booking) {
 	try {
-		const response = await api.post(`/api/v1/bookings/room/${roomId}/bookings`, booking)
+    const headers = getHeader(); // Lấy headers từ hàm getHeader()
+    console.log(headers); // In ra console.log
+		const response = await axios.post(`/api/v1/booking/room/${roomId}/booking`, booking, {
+      headers: headers
+    });
 		return response.data
 	} catch (error) {
 		if (error.response && error.response.data) {
@@ -136,7 +179,7 @@ export async function getAllBookings() {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await axios.get("/api/v1/bookings/all-bookings", {
+    const response = await axios.get("/api/v1/booking/all-booking", {
       headers: headers // Sử dụng headers trong yêu cầu
     });
     return response.data;
@@ -144,14 +187,27 @@ export async function getAllBookings() {
     throw new Error(`Error fetching bookings: ${error.message}`);
   }
 }
-
+// 
+// This function gets all bookings by hotel ID
+export async function getBookingsByHotelId(hotelId) {
+  try {
+    const headers = getHeader();
+    console.log(headers);
+    const response = await axios.get(`/api/v1/booking/all-bookingOfOneHotel/${hotelId}`, {
+      headers: headers
+    });
+    return response.data;
+  } catch (error) {
+    throw new Error(`Error fetching bookings: ${error.message}`);
+  }
+}
 
 // This function gets a booking by its confirmation code
 export async function getBookingByConfirmationCode(confirmationCode) {
 	try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-		const result = await axios.get(`/api/v1/bookings/confirmation/${confirmationCode}`,{
+		const result = await axios.get(`/api/v1/booking/confirmation/${confirmationCode}`,{
       headers: headers
     });
 		return result.data
@@ -169,7 +225,7 @@ export async function cancelBooking(bookingId) {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await axios.delete(`/api/v1/bookings/booking/${bookingId}/delete`, {
+    const response = await axios.delete(`/api/v1/booking/booking/${bookingId}/delete`, {
       headers: headers
     });
     return response.data;
@@ -180,8 +236,7 @@ export async function cancelBooking(bookingId) {
 
 // This function gets available rooms for a given date range and room type
 export async function getAvailableRooms(checkInDate, checkOutDate, roomType) {
-	const result = await api.get(
-		`/api/v1/rooms/available-rooms?checkInDate=${checkInDate}
+	const result = await axios.get(`/api/v1/rooms/available-rooms?checkInDate=${checkInDate}
 		&checkOutDate=${checkOutDate}&roomType=${roomType}`
 	)
 	return result
@@ -190,7 +245,7 @@ export async function getAvailableRooms(checkInDate, checkOutDate, roomType) {
 // This function registers a new user
 export async function registerUser(registration) {
   try {
-    const response = await api.post("/api/v1/auth/register-user", registration);
+    const response = await axios.post("/api/v1/auth/user/register-user", registration);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {
@@ -200,11 +255,24 @@ export async function registerUser(registration) {
     }
   }
 }
+// this is funtion register a new admin
+export async function registerAdmin(registration) {
+  try {
+    const response = await axios.post("/api/v1/auth/user/register-admin", registration);
+    return response.data;
+  } catch (error) {
+    if (error.response && error.response.data) {
+      throw new Error(error.response.data);
+    } else {
+      throw new Error(`User registration error: ${error.message}`);
+    }
+  }
+} 
 
 // This function logs in a registered user
 export async function loginUser(login) {
   try {
-    const response = await api.post("/api/v1/auth/login", login);
+    const response = await axios.post("/api/v1/auth/user/login", login);
     if (response.status >= 200 && response.status < 300) {
       return response.data;
     } else {
@@ -218,7 +286,7 @@ export async function loginUser(login) {
 export const resetPassword = (email) => {
   const headers = getHeader(); 
   console.log(headers); 
-  return axios.post('/api/v1/auth/reset-password', null, {
+  return axios.post('/api/v1/auth/user/reset-password', null, {
     headers: headers, 
     params: {
       email: email
@@ -230,7 +298,7 @@ export const confirmResetPassword = (email,otp, newPassword) => {
   try {
     const headers = getHeader();
     console.log(headers); 
-    const response = axios.post('/api/v1/auth/confirm-reset-password', null, {
+    const response = axios.post('/api/v1/auth/user/confirm-reset-password', null, {
       headers: headers, 
       params: {
         email: email,
@@ -250,7 +318,7 @@ export async function getUserProfile(userId) {
   try {
     const headers = getHeader(); // Lấy headers từ hàm getHeader()
     console.log(headers); // In ra console.log
-    const response = await api.get(`/api/v1/users/profile/${userId}`, {
+    const response = await axios.get(`/api/v1/users/profile/${userId}`, {
       headers: headers
     });
     return response.data;
@@ -262,7 +330,7 @@ export async function getUserProfile(userId) {
 // This function deletes a user
 export async function deleteUser(userId) {
   try {
-    const response = await api.delete(`/api/v1/users/delete/${userId}`, {
+    const response = await axios.delete(`/api/v1/users/delete/${userId}`, {
       headers: getHeader()
     });
     return response.data;
@@ -274,7 +342,7 @@ export async function deleteUser(userId) {
 // This function gets a single user
 export async function getUser(userId) {
   try {
-    const response = await api.get(`/api/v1/users/${userId}`, {
+    const response = await axios.get(`/api/v1/users/${userId}`, {
       headers: getHeader()
     });
     return response.data;
@@ -286,7 +354,7 @@ export async function getUser(userId) {
 // This function gets user bookings by email
 export async function getUserBookingsByEmail(email) {
   try {
-    const response = await api.get(`/api/v1/bookings/history-booking/email/${email}`);
+    const response = await axios.get(`/api/v1/booking/history-booking/email/${email}`);
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching user bookings: ${error.message}`);
@@ -340,5 +408,41 @@ export const getRoomReviews = async (roomId) => {
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching room reviews: ${error.message}`);
+  }
+};
+export const getHotelByName = async (hotelName) => {
+  try {
+    const response = await axios.get(`/api/v1/hotel/${hotelName}`);
+    return response.data;
+  } catch (error) {
+    if (error.response) {
+      // Request made and server responded
+      console.error(`Error fetching hotel: ${error.response.status} - ${error.response.data}`);
+    } else if (error.request) {
+      // The request was made but no response was received
+      console.error('Error fetching hotel: No response received', error.request);
+    } else {
+      // Something happened in setting up the request that triggered an Error
+      console.error('Error fetching hotel:', error.message);
+    }
+    throw new Error(`Error fetching hotel: ${error.message}`);
+  }
+}
+export const addHotel = async (name, address) => {
+  try {
+    const headers = getHeader();
+    console.log(headers);
+    
+    const response = await axios.post('/api/v1/hotel/add-hotel', {
+      name: name,
+      address: address
+    }, {
+      headers: headers
+    });
+
+    return response.data;
+  } catch (error) {
+    console.error("Error adding hotel:", error);
+    throw new Error("Error adding hotel");
   }
 };
