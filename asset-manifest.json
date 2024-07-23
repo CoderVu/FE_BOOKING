@@ -1,15 +1,15 @@
 {
   "files": {
-    "main.css": "/static/css/main.da67f3b4.css",
-    "main.js": "/static/js/main.bb7734ae.js",
-    "static/media/services-1.jpg": "/static/media/services-1.7b5df5c9e036a0e773fe.jpg",
-    "static/media/services4.jpg": "/static/media/services4.4a0c709e2f2d30f37d1d.jpg",
-    "index.html": "/index.html",
-    "main.da67f3b4.css.map": "/static/css/main.da67f3b4.css.map",
-    "main.bb7734ae.js.map": "/static/js/main.bb7734ae.js.map"
+    "main.css": "/FE_BOOKING/static/css/main.4fdd19e5.css",
+    "main.js": "/FE_BOOKING/static/js/main.8b71c4db.js",
+    "static/media/services-1.jpg": "/FE_BOOKING/static/media/services-1.7b5df5c9e036a0e773fe.jpg",
+    "static/media/services4.jpg": "/FE_BOOKING/static/media/services4.4a0c709e2f2d30f37d1d.jpg",
+    "index.html": "/FE_BOOKING/index.html",
+    "main.4fdd19e5.css.map": "/FE_BOOKING/static/css/main.4fdd19e5.css.map",
+    "main.8b71c4db.js.map": "/FE_BOOKING/static/js/main.8b71c4db.js.map"
   },
   "entrypoints": [
-    "static/css/main.da67f3b4.css",
-    "static/js/main.bb7734ae.js"
+    "static/css/main.4fdd19e5.css",
+    "static/js/main.8b71c4db.js"
   ]
 }
