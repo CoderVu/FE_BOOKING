@@ -97,7 +97,7 @@ const ExistingRooms_supper = () => {
       {isLoading ? (
         <p className="text-center">Loading existing rooms</p>
       ) : (
-        <section className="mt-5 mb-5 container">
+        <section className="mt-4 mb-4 container-fluid">
           <div className="d-flex justify-content-between mb-3 mt-5">
             <h2>Existing Rooms</h2>
           </div>
@@ -120,7 +120,7 @@ const ExistingRooms_supper = () => {
           </div>
 
           <div className="table-responsive">
-            <table className="table table-bordered table-hover">
+            <table className="table table-bordered table-hover text-nowrap">
               <thead className="text-center">
                 <tr>
                   <th>ID</th>

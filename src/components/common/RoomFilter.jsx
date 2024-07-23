@@ -1,7 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 const RoomFilter = ({ data, setFilteredData }) => {
   const [filter, setFilter] = useState("");
+  const [roomTypes, setRoomTypes] = useState([]);
+
+  useEffect(() => {
+    if (data && data.length > 0) {
+      const types = ["", ...new Set(data.map((room) => room.roomType))];
+      setRoomTypes(types);
+    }
+  }, [data]);
 
   const handleSelectChange = (e) => {
     const selectedType = e.target.value;
@@ -11,14 +19,14 @@ const RoomFilter = ({ data, setFilteredData }) => {
       room.roomType.toLowerCase().includes(selectedType.toLowerCase())
     );
     setFilteredData(filteredRooms);
+    console.log('Filtered Rooms:', filteredRooms); // Debug output
   };
 
   const clearFilter = () => {
     setFilter("");
     setFilteredData(data);
+    console.log('Filter cleared'); // Debug output
   };
-
-  const roomTypes = ["", ...new Set(data.map((room) => room.roomType))];
 
   return (
     <div className="mb-3">
@@ -28,7 +36,6 @@ const RoomFilter = ({ data, setFilteredData }) => {
         value={filter}
         onChange={handleSelectChange}
       >
-        <option value="">All Room Types</option>
         {roomTypes.map((type, index) => (
           <option key={index} value={type}>
             {type}

@@ -373,3 +373,18 @@ export const addHotel = async (name, address) => {
     throw new Error("Error adding hotel");
   }
 };
+export const updateHotel = async (currentHotelId, name, address) => {
+  try {
+    const response = await axios.post(`/api/v1/hotel/update-hotel/${currentHotelId}`, {
+      name: name,
+      address: address
+    }, {
+        
+      });
+    return response.data;
+  }
+  catch (error) {
+    console.error("Error updating hotel:", error);
+    throw new Error("Error updating hotel");
+  }
+}

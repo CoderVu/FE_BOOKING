@@ -139,7 +139,7 @@ const EditRoom = () => {
               )}
             </div>
             <div className="d-grid d-md-flex mt-2">
-              <Link to="/existing-rooms" className="btn btn-outline-secondary">
+              <Link to="/existing-roomss" className="btn btn-outline-secondary">
                 Back to Rooms
               </Link>
               <button className="btn btn-outline-primary ml-5" type="submit">

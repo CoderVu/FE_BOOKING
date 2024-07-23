@@ -144,7 +144,7 @@ const AddRoomComponent = () => {
           </div>
 
             <div className="d-grid d-md-flex mt-2">
-              <Link to={"/existing-rooms"} className="btn btn-outline-primary ml-5">
+              <Link to={"/existing-roomss"} className="btn btn-outline-primary ml-5">
                 Hủy
               </Link>
               <button className="btn btn-outline-primary ml-5" type="submit" style={{marginLeft:"20px"}}>Thêm</button>
