@@ -1,21 +1,37 @@
-import '../styles/index.css'; // Import index.css file
+import React, { useState, useEffect } from 'react';
+import { AddRoom, getHotelsByManagerEmail } from '../utils/ApiFunctions'; // Import hàm getHotelsByManagerEmail
+import RoomTypeSelector from '../common/RoomTypeSelector';
+import { Link } from 'react-router-dom';
+import '../styles/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import React, { useState } from 'react';
-import { AddRoom } from '../utils/ApiFunctions'; // Import AddRoom function
-import RoomTypeSelector from '../common/RoomTypeSelector';
-import { Link } from 'react-router-dom/cjs/react-router-dom.min';
-import '../styles/index.css'
 const AddRoomComponent = () => {
   const [newRoom, setNewRoom] = useState({
     photo: null,
     roomType: "",
     roomPrice: "",
-    description: ""
+    description: "",
+    hotelId: "" // Thêm trường hotelId vào trạng thái
   });
   const [imagePreview, setImagePreview] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [hotels, setHotels] = useState([]);
+
+  // Fetch danh sách khách sạn
+  useEffect(() => {
+    const fetchHotels = async () => {
+      try {
+        const userEmail = localStorage.getItem("userEmail"); // Hoặc lấy email từ context nếu cần
+        const hotelList = await getHotelsByManagerEmail(userEmail);
+        setHotels(hotelList);
+      } catch (error) {
+        setErrorMessage("Error fetching hotels. Please try again.");
+      }
+    };
+
+    fetchHotels();
+  }, []);
 
   const handleRoomInputChange = (e) => {
     const name = e.target.name;
@@ -28,7 +44,8 @@ const AddRoomComponent = () => {
       }
     }
     setNewRoom({ ...newRoom, [name]: value });
-  }
+  };
+  
 
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
@@ -40,10 +57,10 @@ const AddRoomComponent = () => {
     e.preventDefault();
     console.log("New Room Data:", newRoom); // In ra dữ liệu của phòng mới trước khi gọi API
     try {
-      const success = await AddRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice, newRoom.description);
+      const success = await AddRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice, newRoom.description, newRoom.hotelId); // Gửi hotelId
       if (success) {
         setSuccessMessage("Room added successfully");
-        setNewRoom({ photo: null, roomPrice: "", roomType: "" });
+        setNewRoom({ photo: null, roomPrice: "", roomType: "", hotelId: "" });
         setImagePreview("");
       } else {
         setErrorMessage("Error adding room. Please try again.");
@@ -51,21 +68,22 @@ const AddRoomComponent = () => {
     } catch (error) {
       setErrorMessage(error.message);
     }
-  }
+  };
+
   return (
     <section className="container mt-5 mb-5">
       <div className="row justify-content-center">
         <div className="col-md-8 col-lg-6">
-          <h2 className="mt-5 mb-2">Add a new room</h2>
+          <h2 className="mt-5 mb-2">Thêm phòng</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="roomType" className="form-label">Room Type</label>
+              <label htmlFor="roomType" className="form-label">Loại phòng</label>
               <div>
                 <RoomTypeSelector handleRoomInputChange={handleRoomInputChange} newRoom={newRoom} />
               </div>
             </div>
             <div className="mb-3">
-              <label htmlFor="roomPrice" className="form-label">Room Price</label>
+              <label htmlFor="roomPrice" className="form-label">Giá</label>
               <input
                 className="form-control"
                 required
@@ -77,7 +95,7 @@ const AddRoomComponent = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="description" className="form-label">Description</label>
+              <label htmlFor="description" className="form-label">Mô tả</label>
               <textarea
                 className="form-control"
                 required
@@ -88,7 +106,7 @@ const AddRoomComponent = () => {
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="photo" className="form-label">Room Photo</label>
+              <label htmlFor="photo" className="form-label">Ảnh phòng</label>
               <input
                 className="form-control"
                 required
@@ -99,21 +117,37 @@ const AddRoomComponent = () => {
               />
               {imagePreview && (
                 <div className="image-preview">
-                <img
-                src={imagePreview}
-                alt=""
-                style={{ maxWidth: '400px', maxHeight: '400px' }}
-                className="img-fluid"
-                />
-               </div>
-              
+                  <img
+                    src={imagePreview}
+                    alt=""
+                    style={{ maxWidth: '400px', maxHeight: '400px' }}
+                    className="img-fluid"
+                  />
+                </div>
               )}
             </div>
+            <div className="mb-3">
+            <label htmlFor="hotelId" className="form-label">Tên khách sạn</label>
+            <select
+              className="form-select"
+              id="hotelId"
+              name="hotelId"
+              value={newRoom.hotelId}
+              onChange={handleRoomInputChange}
+              required
+            >
+              <option value="">Select a hotel</option>
+              {hotels.map(hotel => (
+                <option key={hotel.id} value={hotel.id}>{hotel.name}</option>
+              ))}
+            </select>
+          </div>
+
             <div className="d-grid d-md-flex mt-2">
-            <Link to = {"/existing-rooms"}  className =" btn btn-outline-primary ml-5">
-            Back
-            </Link>
-              <button className="btn btn-outline-primary ml-5" type="submit">Add Room</button>
+              <Link to={"/existing-rooms"} className="btn btn-outline-primary ml-5">
+                Hủy
+              </Link>
+              <button className="btn btn-outline-primary ml-5" type="submit" style={{marginLeft:"20px"}}>Thêm</button>
             </div>
           </form>
           {successMessage && (

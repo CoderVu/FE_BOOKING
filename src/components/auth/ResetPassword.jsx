@@ -15,7 +15,7 @@ const ResetPassword = () => {
             setMessage('A link to reset your password has been sent to your email');
             history.push('/confirm-reset-password'); // Chuyển hướng sau khi gửi email thành công
         } catch (error) {
-            setMessage('Failed to send reset password email. Please try again.');
+            setMessage('Failed to send reset password email. Please try again');
         }
     };
 

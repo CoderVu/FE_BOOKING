@@ -22,7 +22,8 @@ const Checkout = () => {
     photo: "",
     roomType: "",
     roomPrice: "",
-	booked: ""
+	  booked: "",
+    
   });
   const { roomId } = useParams();
   const [reviews, setReviews] = useState([]);

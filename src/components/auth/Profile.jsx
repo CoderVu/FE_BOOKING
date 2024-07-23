@@ -78,6 +78,18 @@ const Profile = () => {
             }
         }
     };
+    function getRoleDisplayName(roleName) {
+        switch (roleName) {
+          case "ROLE_USER":
+            return "Khách hàng";
+          case "ROLE_ADMIN":
+            return "Chủ khách sạn";
+          case "ROLE_SUPPERUSER":
+            return "Quản trị viên";
+          default:
+            return "";
+        }
+      }
     
 	const handleBookingCancellation = async (bookingId) => {
 		try {
@@ -268,6 +280,19 @@ const Profile = () => {
                                                     <p className="card-text">{user.phone}</p>
                                                 </div>
                                             </div>
+                                            <hr />
+                                                                                  <div className="form-group row">
+												<label className="col-md-2 col-form-label fw-bold">Vài trò:</label>
+												<div className="col-md-10">
+                                                <ul className="list-unstyled">
+                                                    {user.roles?.length > 0 && (
+                                                        <li className="card-text">
+                                                            {getRoleDisplayName(user.roles[0].name)}
+                                                        </li>
+                                                    )}
+                                                </ul>
+                                                </div>
+											</div>
                                             <hr />
                                             
                                         </div>
