@@ -80,7 +80,7 @@ const ExistingRooms = () => {
   };
 
   useEffect(() => {
-    if (userRole === "ROLE_ADMIN" && userEmail) {
+    if (userRole === "ROLE_OWNER" && userEmail) {
       fetchHotels(userEmail);
     }
   }, [userRole, userEmail]);
@@ -308,7 +308,7 @@ const ExistingRooms = () => {
       </Modal>
   
       {isLoading ? (
-        <p className="text-center">Loading existing rooms</p>
+        <p className="text-center">Loading existing-rooms</p>
       ) : (
           <section className="mt-4 mb-4 container-fluid">
              <h2 className="text-center">DANH SÁCH PHÒNG </h2>
@@ -352,7 +352,7 @@ const ExistingRooms = () => {
                   <td>{room.roomPrice}</td>
                   <td>{room.description}</td>
                   <td className="gap-2 text-center">
-                    <Link to={`/edit-room/${room.id}`} className="btn btn-info btn-sm me-2">
+                    <Link to={`/view-room/${room.id}`} className="btn btn-info btn-sm me-2">
                       <FaEye /> View
                     </Link>
                     <Link to={`/edit-room/${room.id}`} className="btn btn-warning btn-sm me-2">

@@ -26,6 +26,7 @@ import AdminOrSuperAdminRoute from './components/home/AdminOrSuperAdminRoute';
 import ExistingRooms_supper from "../src/components/room/ExistingRooms_supper"
 import SuperAdmin from './components/admin/SuperAdmin';
 import RegistrationOwer from './components/auth/RegistrationOwer';
+import ViewRoomComponent from './components/room/ViewRoomComponent';
 
 
 const App = () => {
@@ -42,6 +43,7 @@ const App = () => {
 
           <AdminOrSuperAdminRoute exact path="/edit-room/:roomId" component={EditRoom} />
           <AdminOrSuperAdminRoute exact path="/add-room" component={AddRoomComponent} />
+          <AdminOrSuperAdminRoute exact path="/view-room/:roomId" component={ViewRoomComponent} />
 
           <AdminOrSuperAdminRoute exact path="/existing-roomss" component={ExistingRooms_supper} />
           <AdminOrSuperAdminRoute exact path="/existing-bookingss" component={BookingsTable} />

@@ -8,8 +8,8 @@ import "../styles/Admin.css"; // Ensure you create and import the appropriate CS
 const SuperAdmin = () => {
     const { user } = useContext(AuthContext);
 
-    // Kiểm tra xem người dùng có phải là ROLE_SUPPERUSER không
-    const isSupperUser = user && user.roles && user.roles.includes('ROLE_SUPPERUSER');
+    // Kiểm tra xem người dùng có phải là ROLE_ADMIN không
+    const isSupperUser = user && user.roles && user.roles.includes('ROLE_ADMIN');
 
     return (
         <div className="admin-page">

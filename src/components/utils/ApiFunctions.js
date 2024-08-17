@@ -3,7 +3,7 @@ import axios from "../utils/axiosConfig";
 // Function to get all rooms
 export async function getAllRooms() {
   try {
-    const result = await axios.get('/api/v1/rooms/all-rooms');
+    const result = await axios.get('/api/v1/public/rooms/all-rooms');
     return result.data;
   } catch (error) {
     console.error('Error fetching rooms:', error);
@@ -14,7 +14,7 @@ export async function getAllRooms() {
 // Function to get room types
 export async function getRoomTypes() {
   try {
-    const response = await axios.get('/api/v1/rooms/room/types');
+    const response = await axios.get('/api/v1/public/rooms/types');
     return response.data;
   } catch (error) {
     console.error('Error fetching room types:', error);
@@ -36,7 +36,7 @@ export async function AddRoom(photo, roomType, roomPrice, description, hotelId) 
   });
 
   try {
-    const response = await axios.post("/api/v1/rooms/admin/add/new-room", formData);
+    const response = await axios.post("/api/v1/owner/rooms/add/new-room", formData);
 
     if (response.status === 200 || response.status === 201) {
       return true;
@@ -57,7 +57,7 @@ export async function updateRoom(roomId, roomData) {
   formData.append("photo", roomData.photo);
   formData.append("description", roomData.description);
   try {
-    const response = await axios.put(`/api/v1/rooms/admin/update/${roomId}`, formData);
+    const response = await axios.put(`/api/v1/owner/rooms/update/${roomId}`, formData);
     return response.data;
   } catch (error) {
     console.error("Error updating room:", error);
@@ -67,7 +67,7 @@ export async function updateRoom(roomId, roomData) {
 
 export const getAllHotels = async () => {
   try {
-    const response = await axios.get("/api/v1/hotel/all-hotels");
+    const response = await axios.get("/api/v1/public/hotel/all-hotels");
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching hotels: ${error.message}`);
@@ -76,7 +76,7 @@ export const getAllHotels = async () => {
 
 export async function getAllRoomsByHotelId(hotelId) {
   try {
-    const response = await axios.get(`/api/v1/rooms/all-rooms/${hotelId}`);
+    const response = await axios.get(`/api/v1/public/rooms/all-rooms/${hotelId}`);
     console.log(`Rooms for hotel ${hotelId}:`, response.data); // Debug: In dữ liệu rooms
     return response.data;
   } catch (error) {
@@ -87,7 +87,7 @@ export async function getAllRoomsByHotelId(hotelId) {
 
 export async function getHotelsByManagerEmail(managerEmail) {
   try {
-    const response = await axios.get(`/api/v1/hotel/hotels/managed-by/${managerEmail}`);
+    const response = await axios.get(`/api/v1/owner/hotel/managed-by/${managerEmail}`);
     console.log(`Hotels for manager ${managerEmail}:`, response.data); // Debug: In dữ liệu hotels
     return response.data;
   } catch (error) {
@@ -99,7 +99,7 @@ export async function getHotelsByManagerEmail(managerEmail) {
 // This function deletes a room from the database
 export async function deleteRoom(roomId) {
   try {
-    const response = await axios.delete(`/api/v1/rooms/delete/room/${roomId}`);
+    const response = await axios.delete(`/api/v1/owner/rooms/delete/${roomId}`);
     return response.data;
   } catch (error) {
     console.error("Error deleting room:", error);
@@ -110,7 +110,7 @@ export async function deleteRoom(roomId) {
 // This function gets a room by its ID
 export async function getRoomById(roomId) {
   try {
-    const result = await axios.get(`/api/v1/rooms/room/${roomId}`);
+    const result = await axios.get(`/api/v1/public/rooms/${roomId}`);
     return result.data;
   } catch (error) {
     throw new Error(`Error fetching room ${error.message}`);
@@ -120,7 +120,7 @@ export async function getRoomById(roomId) {
 // This function books a room
 export async function bookRoom(roomId, booking) {
   try {
-    const response = await axios.post(`/api/v1/booking/room/${roomId}/booking`, booking);
+    const response = await axios.post(`/api/v1/user/bookings/room/${roomId}`, booking);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {
@@ -134,7 +134,7 @@ export async function bookRoom(roomId, booking) {
 // Function to get all bookings
 export async function getAllBookings() {
   try {
-    const response = await axios.get("/api/v1/booking/all-booking");
+    const response = await axios.get("/api/v1/owner/bookings/all-booking");
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching bookings: ${error.message}`);
@@ -144,7 +144,7 @@ export async function getAllBookings() {
 // This function gets all bookings by hotel ID
 export async function getBookingsByAdminId(adminId) {
   try {
-    const response = await axios.get(`/api/v1/booking/all-bookingOfOneHotel/${adminId}`);
+    const response = await axios.get(`/api/v1/owner/bookings/all-bookingOfOneHotel/${adminId}`);
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching bookings: ${error.message}`);
@@ -154,7 +154,7 @@ export async function getBookingsByAdminId(adminId) {
 // This function gets a booking by its confirmation code
 export async function getBookingByConfirmationCode(confirmationCode) {
   try {
-    const result = await axios.get(`/api/v1/booking/confirmation/${confirmationCode}`);
+    const result = await axios.get(`/api/v1/user/bookings/confirmation/${confirmationCode}`);
     return result.data;
   } catch (error) {
     if (error.response && error.response.data) {
@@ -168,7 +168,7 @@ export async function getBookingByConfirmationCode(confirmationCode) {
 // This function cancels a booking
 export async function cancelBooking(bookingId) {
   try {
-    const response = await axios.delete(`/api/v1/booking/booking/${bookingId}/delete`);
+    const response = await axios.delete(`/api/v1/user/bookings/${bookingId}/delete`);
     return response.data;
   } catch (error) {
     throw new Error(`Error canceling booking: ${error.message}`);
@@ -177,14 +177,14 @@ export async function cancelBooking(bookingId) {
 
 // This function gets available rooms for a given date range and room type
 export async function getAvailableRooms(checkInDate, checkOutDate, roomType, address) {
-  const result = await axios.get(`/api/v1/rooms/available-rooms?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&roomType=${roomType}&address=${address}`);
+  const result = await axios.get(`/api/v1/public/rooms/available-rooms?checkInDate=${checkInDate}&checkOutDate=${checkOutDate}&roomType=${roomType}&address=${address}`);
   return result;
 }
 
 // This function registers a new user
 export async function registerUser(registration) {
   try {
-    const response = await axios.post("/api/v1/auth/user/register-user", registration);
+    const response = await axios.post("/api/v1/auth/register-user", registration);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {
@@ -198,7 +198,7 @@ export async function registerUser(registration) {
 // This function registers a new admin
 export async function registerAdmin(registration) {
   try {
-    const response = await axios.post("/api/v1/auth/user/register-admin", registration);
+    const response = await axios.post("/api/v1/auth/register-admin", registration);
     return response.data;
   } catch (error) {
     if (error.response && error.response.data) {
@@ -212,7 +212,7 @@ export async function registerAdmin(registration) {
 // This function logs in a registered user
 export async function loginUser(login) {
   try {
-    const response = await axios.post("/api/v1/auth/user/login", login);
+    const response = await axios.post("/api/v1/auth/login", login);
     if (response.status >= 200 && response.status < 300) {
       return response.data;
     } else {
@@ -226,7 +226,7 @@ export async function loginUser(login) {
 
 // Function to reset password
 export const resetPassword = (email) => {
-  return axios.post('/api/v1/auth/user/reset-password', null, {
+  return axios.post('/api/v1/auth/reset-password', null, {
     params: {
       email: email
     }
@@ -236,7 +236,7 @@ export const resetPassword = (email) => {
 // Function to confirm reset password
 export const confirmResetPassword = (email, otp, newPassword) => {
   try {
-    const response = axios.post('/api/v1/auth/user/confirm-reset-password', null, {
+    const response = axios.post('/api/v1/auth/confirm-reset-password', null, {
       params: {
         email: email,
         otp: otp,
@@ -253,7 +253,7 @@ export const confirmResetPassword = (email, otp, newPassword) => {
 // This function gets the user profile
 export async function getUserProfile(userId) {
   try {
-    const response = await axios.get(`/api/v1/users/profile/${userId}`);
+    const response = await axios.get(`/api/v1/user/profile/id/${userId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -263,7 +263,7 @@ export async function getUserProfile(userId) {
 // This function deletes a user
 export async function deleteUser(userId) {
   try {
-    const response = await axios.delete(`/api/v1/users/delete/${userId}`);
+    const response = await axios.delete(`/api/v1/user/profile/delete/${userId}`);
     return response.data;
   } catch (error) {
     return error.message;
@@ -273,7 +273,7 @@ export async function deleteUser(userId) {
 // This function gets a single user
 export async function getUser(userId) {
   try {
-    const response = await axios.get(`/api/v1/users/${userId}`);
+    const response = await axios.get(`/api/v1/user/profile/email/${userId}`);
     return response.data;
   } catch (error) {
     throw error;
@@ -283,7 +283,7 @@ export async function getUser(userId) {
 // This function gets user bookings by email
 export async function getUserBookingsByEmail(email) {
   try {
-    const response = await axios.get(`/api/v1/booking/history-booking/email/${email}`);
+    const response = await axios.get(`/api/v1/user/bookings/history-booking/email/${email}`);
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching user bookings: ${error.message}`);
@@ -292,7 +292,7 @@ export async function getUserBookingsByEmail(email) {
 export async function updateProfileUserById(userId, userData) {
   try {
 
-    const response = await axios.post(`/api/v1/auth/user/update-user/${userId}`, userData, {
+    const response = await axios.post(`/api/v1/auth/update-user/${userId}`, userData, {
 
     });
     return response.data;
@@ -314,7 +314,7 @@ export const rateRoom = async (userId, roomId, bookingId, starRating, comment) =
       console.log('comment:', comment);
 
       // Gửi yêu cầu POST với các tham số dạng query
-      const response = await axios.post(`/api/v1/ratings/rate`, null, {
+      const response = await axios.post(`/api/v1/user/ratings/rate`, null, {
           params: {
               userId: userId,
               roomId: roomId,
@@ -332,7 +332,7 @@ export const rateRoom = async (userId, roomId, bookingId, starRating, comment) =
 };
 export const getRoomReviews = async (roomId) => {
   try {
-    const response = await axios.get(`/api/v1/rooms/room/${roomId}/reviews`);
+    const response = await axios.get(`/api/v1/public/rooms/${roomId}/reviews`);
     return response.data;
   } catch (error) {
     throw new Error(`Error fetching room reviews: ${error.message}`);
@@ -360,7 +360,7 @@ export const addHotel = async (name, address) => {
   try {
 
     
-    const response = await axios.post('/api/v1/hotel/add-hotel', {
+    const response = await axios.post('/api/v1/owner/hotel/add-hotel', {
       name: name,
       address: address
     }, {
@@ -375,7 +375,7 @@ export const addHotel = async (name, address) => {
 };
 export const updateHotel = async (currentHotelId, name, address) => {
   try {
-    const response = await axios.post(`/api/v1/hotel/update-hotel/${currentHotelId}`, {
+    const response = await axios.post(`/api/v1/owner/hotel/update-hotel/${currentHotelId}`, {
       name: name,
       address: address
     }, {

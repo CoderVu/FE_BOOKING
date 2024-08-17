@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { AddRoom, getHotelsByManagerEmail } from '../utils/ApiFunctions'; // Import hàm getHotelsByManagerEmail
+import { AddRoom, getHotelsByManagerEmail } from '../utils/ApiFunctions';
 import RoomTypeSelector from '../common/RoomTypeSelector';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 import '../styles/index.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
@@ -11,18 +11,18 @@ const AddRoomComponent = () => {
     roomType: "",
     roomPrice: "",
     description: "",
-    hotelId: "" // Thêm trường hotelId vào trạng thái
+    hotelId: ""
   });
   const [imagePreview, setImagePreview] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [hotels, setHotels] = useState([]);
+  const history = useHistory();
 
-  // Fetch danh sách khách sạn
   useEffect(() => {
     const fetchHotels = async () => {
       try {
-        const userEmail = localStorage.getItem("userEmail"); // Hoặc lấy email từ context nếu cần
+        const userEmail = localStorage.getItem("userEmail");
         const hotelList = await getHotelsByManagerEmail(userEmail);
         setHotels(hotelList);
       } catch (error) {
@@ -31,7 +31,14 @@ const AddRoomComponent = () => {
     };
 
     fetchHotels();
-  }, []);
+
+    const userRole = localStorage.getItem("userRole");
+    if (userRole === "ROLE_OWNER") {
+      history.push("/existing-rooms");
+    } else if (userRole === "ROLE_ADMIN") {
+      history.push("/existing-roomss");
+    }
+  }, [history]);
 
   const handleRoomInputChange = (e) => {
     const name = e.target.name;
@@ -45,7 +52,6 @@ const AddRoomComponent = () => {
     }
     setNewRoom({ ...newRoom, [name]: value });
   };
-  
 
   const handleImageChange = (e) => {
     const selectedImage = e.target.files[0];
@@ -55,9 +61,9 @@ const AddRoomComponent = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("New Room Data:", newRoom); // In ra dữ liệu của phòng mới trước khi gọi API
+    console.log("New Room Data:", newRoom);
     try {
-      const success = await AddRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice, newRoom.description, newRoom.hotelId); // Gửi hotelId
+      const success = await AddRoom(newRoom.photo, newRoom.roomType, newRoom.roomPrice, newRoom.description, newRoom.hotelId);
       if (success) {
         setSuccessMessage("Room added successfully");
         setNewRoom({ photo: null, roomPrice: "", roomType: "", hotelId: "" });
@@ -127,27 +133,27 @@ const AddRoomComponent = () => {
               )}
             </div>
             <div className="mb-3">
-            <label htmlFor="hotelId" className="form-label">Tên khách sạn</label>
-            <select
-              className="form-select"
-              id="hotelId"
-              name="hotelId"
-              value={newRoom.hotelId}
-              onChange={handleRoomInputChange}
-              required
-            >
-              <option value="">Select a hotel</option>
-              {hotels.map(hotel => (
-                <option key={hotel.id} value={hotel.id}>{hotel.name}</option>
-              ))}
-            </select>
-          </div>
+              <label htmlFor="hotelId" className="form-label">Tên khách sạn</label>
+              <select
+                className="form-select"
+                id="hotelId"
+                name="hotelId"
+                value={newRoom.hotelId}
+                onChange={handleRoomInputChange}
+                required
+              >
+                <option value="">Select a hotel</option>
+                {hotels.map(hotel => (
+                  <option key={hotel.id} value={hotel.id}>{hotel.name}</option>
+                ))}
+              </select>
+            </div>
 
             <div className="d-grid d-md-flex mt-2">
-              <Link to={"/existing-roomss"} className="btn btn-outline-primary ml-5">
+              <Link to={"/existing-rooms"} className="btn btn-outline-primary ml-5">
                 Hủy
               </Link>
-              <button className="btn btn-outline-primary ml-5" type="submit" style={{marginLeft:"20px"}}>Thêm</button>
+              <button className="btn btn-outline-primary ml-5" type="submit" style={{ marginLeft: "20px" }}>Thêm</button>
             </div>
           </form>
           {successMessage && (

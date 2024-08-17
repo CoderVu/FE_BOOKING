@@ -82,9 +82,9 @@ const Profile = () => {
         switch (roleName) {
           case "ROLE_USER":
             return "Khách hàng";
-          case "ROLE_ADMIN":
+          case "ROLE_OWNER":
             return "Chủ khách sạn";
-          case "ROLE_SUPPERUSER":
+          case "ROLE_ADMIN":
             return "Quản trị viên";
           default:
             return "";

@@ -5,8 +5,7 @@ import { AuthContext } from "../auth/AuthProvider";
 const AdminOrSuperAdminRoute = ({ component: Component, ...rest }) => {
   const { user } = useContext(AuthContext);
 
-  // Để cả 2 role ADMIN và ROLE_SUPERUSER đều được truy cập
-  const isAuthorized = user && (user.roles.includes("ROLE_ADMIN") || user.roles.includes("ROLE_SUPPERUSER"));
+  const isAuthorized = user && (user.roles.includes("ROLE_OWNER") || user.roles.includes("ROLE_ADMIN"));
 
   return (
     <Route
@@ -15,7 +14,7 @@ const AdminOrSuperAdminRoute = ({ component: Component, ...rest }) => {
         isAuthorized ? (
           <Component {...props} />
         ) : (
-          <Redirect to="/" /> // Redirects to the home page if the user is not ADMIN or ROLE_SUPERUSER
+          <Redirect to="/" /> // Redirects to the home page if the user is not ADMIN or ROLE_ADMIN
         )
       }
     />

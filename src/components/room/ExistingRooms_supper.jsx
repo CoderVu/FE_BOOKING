@@ -140,7 +140,7 @@ const ExistingRooms_supper = () => {
                     <td>{room.roomPrice}</td>
                     <td>{room.description}</td>
                     <td className="gap-2 text-center">
-                      <Link to={`/edit-room/${room.id}`} className="btn btn-info btn-sm me-2">
+                      <Link to={`/view-room/${room.id}`} className="btn btn-info btn-sm me-2">
                         <FaEye /> View
                       </Link>
                       <Link to={`/edit-room/${room.id}`} className="btn btn-warning btn-sm me-2">

@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import RoomTypeSelector from '../common/RoomTypeSelector';
 import { getRoomById, updateRoom } from '../utils/ApiFunctions';
 import '../styles/index.css'
+
 const EditRoom = () => {
   const { roomId } = useParams();
 
@@ -16,6 +17,7 @@ const EditRoom = () => {
   const [imagePreview, setImagePreview] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
+  const [userRole, setUserRole] = useState(''); // New state to store the user's role
 
   useEffect(() => {
     const fetchRoomData = async () => {
@@ -25,7 +27,6 @@ const EditRoom = () => {
           setRoom(roomData);
           setImagePreview(`data:image/jpeg;base64,${roomData.photo}`);
         } else {
-          // Nếu không có dữ liệu phòng, đặt giá trị mặc định cho roomType và roomPrice
           setRoom({
             photo: null,
             roomType: '',
@@ -37,9 +38,17 @@ const EditRoom = () => {
         console.error('Error fetching room data:', error);
       }
     };
+
+    const fetchUserRole = () => {
+      // Replace this with actual logic to get the user's role
+      const role = localStorage.getItem('userRole'); // Assuming the role is stored in localStorage
+      setUserRole(role);
+    };
+
     fetchRoomData();
+    fetchUserRole();
   }, [roomId]);
-  
+
   // Event handlers
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -55,8 +64,8 @@ const EditRoom = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const token = localStorage.getItem("token"); // Lấy token từ local storage
-      const response = await updateRoom(roomId, room, token); // Truyền token vào hàm updateRoom
+      const token = localStorage.getItem("token");
+      const response = await updateRoom(roomId, room, token);
       if (response) {
         setSuccessMessage('Room updated successfully');
         setRoom(response.data);
@@ -67,7 +76,8 @@ const EditRoom = () => {
       setErrorMessage(error.message);
     }
   };
-  
+
+  const backLink = userRole === 'ROLE_OWNER' ? '/existing-rooms' : '/existing-roomss';
 
   // Render
   return (
@@ -77,9 +87,7 @@ const EditRoom = () => {
           <h2 className="mt-5 mb-2">Edit Room</h2>
           <form onSubmit={handleSubmit}>
             <div className="mb-3">
-              <label htmlFor="roomType" className="form-label">
-                Room Type
-              </label>
+              <label htmlFor="roomType" className="form-label">Room Type</label>
               <div>
                 <RoomTypeSelector
                   handleRoomInputChange={handleInputChange}
@@ -88,37 +96,30 @@ const EditRoom = () => {
               </div>
             </div>
             <div className="mb-3">
-              <label htmlFor="roomPrice" className="form-label">
-                Room Price
-              </label>
+              <label htmlFor="roomPrice" className="form-label">Room Price</label>
               <input
                 className="form-control"
                 required
                 id="roomPrice"
                 type="number"
                 name="roomPrice"
-                value={room ? room.roomPrice : ''}
+                value={room.roomPrice}
                 onChange={handleInputChange}
               />
-
             </div>
             <div className="mb-3">
-              <label htmlFor="description" className="form-label">
-                Room Description
-              </label>
+              <label htmlFor="description" className="form-label">Room Description</label>
               <textarea
                 className="form-control"
                 required
                 id="description"
                 name="description"
-                value={room ? room.description : ''}
-                onChange={handleInputChange}  
+                value={room.description}
+                onChange={handleInputChange}
               />
             </div>
             <div className="mb-3">
-              <label htmlFor="photo" className="form-label">
-                Room Photo
-              </label>
+              <label htmlFor="photo" className="form-label">Room Photo</label>
               <input
                 className="form-control"
                 required
@@ -139,7 +140,7 @@ const EditRoom = () => {
               )}
             </div>
             <div className="d-grid d-md-flex mt-2">
-              <Link to="/existing-roomss" className="btn btn-outline-secondary">
+              <Link to={backLink} className="btn btn-outline-secondary">
                 Back to Rooms
               </Link>
               <button className="btn btn-outline-primary ml-5" type="submit">
